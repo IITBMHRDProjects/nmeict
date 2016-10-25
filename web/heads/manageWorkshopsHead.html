@@ -1,0 +1,182 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">       
+    <meta name="description" content="website description" />
+    <meta name="keywords" content="website keywords, website keywords" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>'Project Name' | Manage Workshops</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" href="css/tipTip.css"/>
+    <link rel="stylesheet" href="css/css3-buttons.css"/>
+    <!-- modernizr enables HTML5 elements and feature detects -->
+    <script type="text/javascript" src="js/modernizr-1.5.min.js"></script>   
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery.easing-sooper.js"></script>
+    <script type="text/javascript" src="js/jquery.sooperfish.js"></script>
+    <script type="text/javascript" src="js/project_common.js"></script>
+    <script language="JavaScript" src="js/jquery.tipTip.minified.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".tipTip").tipTip({defaultPosition: "right"});
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('ul.sf-menu').sooperfish();
+            $('.top').click(function() {
+                $('html, body').animate({scrollTop: 0}, 'fast');
+                return false;
+            });
+            $("#settingoptions").hide();
+            $("#showmore").click(function(e) {
+                var x = e.pageX;
+                var tmpx = x - 200;
+                $("#settingoptions").css({left: tmpx});
+                $("#settingoptions").slideToggle();
+            });
+
+            $(document).bind('click', function(e) {
+                $("#settingoptions").hide();
+            });
+        });
+    </script>     
+    <link rel="stylesheet" href="css/datepicker-jquery-ui.css">
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/datepicker-jquery-ui.js"></script>
+    <script src="validation/validate.js"></script>
+    <script type="text/javascript" language="JavaScript" src="js/ajaxedit.js"></script>
+    <script>
+        var $jQuery2 = jQuery.noConflict(true);
+
+        $jQuery2(function() {
+            $jQuery2("#datepicker1").datepicker({dateFormat: 'dd-mm-yy'});
+            $jQuery2("#datepicker2").datepicker({dateFormat: 'dd-mm-yy'});
+            $jQuery2("#datepicker3").datepicker({dateFormat: 'dd-mm-yy'});
+            $jQuery2("#datepicker4").datepicker({dateFormat: 'dd-mm-yy'});
+        });
+    </script>
+    <script type="text/javascript">
+        function showNewField() {
+            //            alert("inside show new field fn");
+            document.getElementById("newWorkshopName").style.display = "inline";
+        }
+        function reportWorkshop(value) {
+            document.getElementById("resMWToBeCreated").style.display = "none";
+            if (value == "newWorkshop") {
+                document.getElementById("newWorkshopName").style.display = "inline";
+                document.getElementById("isNew").value = true;
+                document.getElementById("categorycode1").disabled = false;
+                document.getElementById("categorycode2").disabled = false;
+                document.getElementById("categorycode3").disabled = false;
+                document.getElementById("categorycode4").disabled = false;
+                document.getElementById("categorycode5").disabled = false;
+                document.getElementById("selectWorkshop").value = 'newWorkshop';
+
+            } else {
+                document.getElementById("newWorkshopName").style.display = "none";
+                document.getElementById("isNew").value = false;
+            }
+            if (value != "selectWorkshop" && value != "newWorkshop") {
+                document.getElementById("workshopName").value = "value";
+                document.getElementById("newWorkshopName").style.display = "inline";
+                document.getElementById("isNew").value = false;
+                //call ajax for loading the pre-existing values.
+                resetWorkshopManageform();
+                fetchWorkshopDetails(value);
+            }
+            if (value = "selectWorkshop") {
+                //reset all fields
+                resetWorkshopManageform();
+            }
+        }
+        function reportCCode(categorycode)
+        {
+            var isnew = document.getElementById("selectWorkshop").value;
+            document.getElementById("resMWToBeCreated").style.display = "none";
+            if ((categorycode != null && isnew == "newWorkshop")) {
+
+                if (categorycode == 8) {
+                    document.getElementById("payment_mode_1").checked = false;
+                    document.getElementById("payment_mode_2").checked = true;
+                    document.getElementById("payment_mode_2").disabled = true;
+                    document.getElementById("without_rc_div").style.display = "inline";
+                    document.getElementById("payment_div").style.display = "inline";
+                    document.getElementById("withdrawal_div").style.display = "inline";
+                }
+                else {
+                    document.getElementById("payment_mode_2").checked = false;
+                    document.getElementById("without_rc_div").style.display = "none";
+                    document.getElementById("payment_div").style.display = "none";
+                    document.getElementById("withdrawal_div").style.display = "none";
+                }
+
+                if (categorycode == 7 || categorycode == 5 || categorycode == 8)
+                {
+                    document.getElementById("resCoWorkshopidInput").value = "";
+                }
+                else
+                {
+                    if (categorycode == 4)
+                    {
+                        document.getElementById("resMWToBeCreated").style.display = "inline";
+                        document.getElementById("resCoWorkshopidInput").value = 0;
+                    }
+                    else {
+                        document.getElementById("resCoWorkshopidInput").value = 0;
+                    }
+                }
+                fetchWorkshopid(categorycode);
+            }
+        }
+
+        function dateDisplayChange() {
+            var checkVal = document.getElementById("dateToBeDisplayed").checked;
+            var wid = document.getElementById("selectWorkshop").value;
+            if (wid != "selectWorkshop") {
+                if (checkVal == true) {
+                    document.getElementById("dateDisplay").value = "1";
+                } else if (checkVal == false) {
+                    document.getElementById("dateDisplay").value = "0";
+                }
+            }
+        }
+
+        function show_paymentRC() {
+            var res = document.getElementById("without_RC2").checked;
+            if (res == 1) {
+                document.getElementById("payment_mode_1").checked = false;
+                document.getElementById("payment_mode_1").disabled = true;
+                document.getElementById("certificategroup2").checked = false;
+                document.getElementById("certificategroup2").disabled = true;
+
+                document.getElementById("accommodation2").checked = true;
+                document.getElementById("accommodation2").disabled = true;
+                document.getElementById("accommodation1").disabled = true;
+
+            }
+            else {
+                document.getElementById("payment_mode_1").checked = false;
+                document.getElementById("payment_mode_1").disabled = false;
+                document.getElementById("certificategroup2").checked = false;
+                document.getElementById("certificategroup2").disabled = false;
+                document.getElementById("accommodation2").disabled = false;
+                document.getElementById("accommodation1").disabled = false;
+            }
+        }
+
+
+
+
+        // reset payment fields - back up
+//                document.getElementById("payment_div").style.display = "none";
+//                document.getElementById("without_rc_div").style.display = "none";
+//                document.getElementById("payment_mode_1").checked = false;
+//                document.getElementById("payment_mode_2").checked = false;
+//                 document.getElementById("without_RC1").checked = false;
+//                document.getElementById("without_RC2").checked = false;
+    </script>
+</head>

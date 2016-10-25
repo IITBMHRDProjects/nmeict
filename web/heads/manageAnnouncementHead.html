@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">       
+    <meta name="description" content="website description" />
+    <meta name="keywords" content="website keywords, website keywords" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>'Project Name' | Manage Announcement</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" href="css/tipTip.css"/>
+    <link rel="stylesheet" href="css/css3-buttons.css"/>
+    <!-- modernizr enables HTML5 elements and feature detects -->
+    <script type="text/javascript" src="js/modernizr-1.5.min.js"></script>   
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery.easing-sooper.js"></script>
+    <script type="text/javascript" src="js/jquery.sooperfish.js"></script>
+    <script type="text/javascript" src="js/project_common.js"></script>
+    <script language="JavaScript" src="js/jquery.tipTip.minified.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".tipTip").tipTip({defaultPosition: "right"});
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('ul.sf-menu').sooperfish();
+            $('.top').click(function() {
+                $('html, body').animate({scrollTop: 0}, 'fast');
+                return false;
+            });
+            $("#settingoptions").hide();
+            $("#showmore").click(function(e) {
+                var x=e.pageX;
+                var tmpx=x-200;
+                $("#settingoptions").css({left: tmpx});
+                $("#settingoptions").slideToggle();
+            });
+
+            $(document).bind('click', function(e) {
+                $("#settingoptions").hide();
+            });
+        });
+    </script>
+    <script src="validation/validate.js"></script>
+    <script type="text/javascript" language="JavaScript" src="js/ajaxedit.js"></script>
+    <script>
+        function changeAnnouncement() {
+            var a_content = document.getElementById("announcement").value;
+            if (a_content == "-1") {
+                document.getElementById("announcementText").value = "";
+                $("#link").prop('readonly', false);
+                document.getElementById("link").value = "";
+                document.getElementById("datepicker1").value = "";
+                document.getElementById("datepicker2").value = "";
+                document.getElementById("locationih").checked = false;
+                document.getElementById("locationoh").checked = true;
+                document.getElementById("radio_location").value = "outhouse";
+                document.getElementById("announcementText").style.display = "inline";
+                document.getElementById("visibleY").checked = false;
+                document.getElementById("visibleN").checked = false;
+                document.getElementById("announcementText").style.display = "none";
+            } else if (a_content != '-1' && a_content !='-2') {
+                document.getElementById("announcementText").style.display = "none";
+                fetchAnnouncementDetails(a_content);
+
+                document.getElementById("announcement_blankerr").style.display = "none";
+                document.getElementById("link_blankerr").style.display = "none";
+                document.getElementById("startdate_blankerr").style.display = "none";
+                document.getElementById("enddate_blankerr").style.display = "none";
+                document.getElementById("location_blankerr").style.display = "none";
+                document.getElementById("visible_blankerr").style.display = "none";
+            }else if(a_content == '-2'){
+                createNewAnnoucement();
+            }else if (a_content == '-1') {
+               // resetAll();
+              //  document.getElementById("announcementText").style.display = "none";
+            }
+        }
+
+        function resetAll() {
+            document.getElementById("announcement_blankerr").style.display = "none";
+            document.getElementById("link_blankerr").style.display = "none";
+            document.getElementById("startdate_blankerr").style.display = "none";
+            document.getElementById("enddate_blankerr").style.display = "none";
+            document.getElementById("location_blankerr").style.display = "none";
+            document.getElementById("visible_blankerr").style.display = "none";
+            document.getElementById("announcement").value="-1";
+            document.getElementById("announcementText").value="";
+            document.getElementById("link").value="";
+            $("#link").prop('readonly', false);
+            document.getElementById("datepicker1").value = "";
+            document.getElementById("datepicker2").value = "";
+            document.getElementById("visibleY").checked = false;
+            document.getElementById("visibleN").checked = false;
+            document.getElementById("locationih").checked = false;
+            document.getElementById("locationoh").checked = false;
+            window.location.reload();
+        }
+
+        function createNewAnnoucement() {
+           // document.getElementById("announcement").innerHTML = "";
+            document.getElementById("announcementText").value = "";
+            $("#link").prop('readonly', false);
+            document.getElementById("link").value = "";
+            document.getElementById("datepicker1").value = "";
+            document.getElementById("datepicker2").value = "";
+            document.getElementById("locationih").checked = false;
+            document.getElementById("locationoh").checked = true;
+            document.getElementById("radio_location").value = "outhouse";
+            document.getElementById("announcementText").style.display = "inline";
+            //var x = document.getElementById("announcement");
+            //var option = document.createElement("option");
+            //option.text = "Enter New Announcement";
+            //option.value = "-1";
+            //x.add(option);
+            document.getElementById("announcement").value = "-2";
+            document.getElementById("visibleY").checked = false;
+            document.getElementById("visibleN").checked = false;
+        }
+    </script>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">       
+    <meta name="description" content="website description" />
+    <meta name="keywords" content="website keywords, website keywords" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>'Project Name' | Manage Workshops</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" href="css/tipTip.css"/>
+    <link rel="stylesheet" href="css/css3-buttons.css"/>
+    <!-- modernizr enables HTML5 elements and feature detects -->
+    <script type="text/javascript" src="js/modernizr-1.5.min.js"></script>   
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery.easing-sooper.js"></script>
+    <script type="text/javascript" src="js/jquery.sooperfish.js"></script>
+    <script type="text/javascript" src="js/project_common.js"></script>
+    <script language="JavaScript" src="js/jquery.tipTip.minified.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".tipTip").tipTip({defaultPosition: "right"});
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('ul.sf-menu').sooperfish();
+            $('.top').click(function() {
+                $('html, body').animate({scrollTop: 0}, 'fast');
+                return false;
+            });
+            $("#settingoptions").hide();
+            $("#showmore").click(function(e) {
+                var x=e.pageX;
+                var tmpx=x-200;
+                $("#settingoptions").css({left: tmpx});
+                $("#settingoptions").slideToggle();
+            });
+
+            $(document).bind('click', function(e) {
+                $("#settingoptions").hide();
+            });
+        });
+    </script>
+    <script src="validation/validate.js"></script>
+    <script>
+    function validateWRForm1(WRForm) {
+        var value = 0;
+        var permissionLetter = WRForm.permissionLetter.value;
+        if (!(permissionLetter == "" || permissionLetter == null)) {
+            var size = WRForm.permissionLetter.files[0].size;
+            var val = validateLetter(permissionLetter);
+            var val1 = checkFileSize(size, 262144);
+            if (val == false || val1 == false) {
+                //borderRedError('permissionLetter');
+                document.getElementById('permissionLetterError').style.display = "inline";
+                value++;
+            }
+        } else {
+          // borderRedError('permissionLetter');
+             document.getElementById('permissionLetterError').style.display = "inline";
+            value++;
+        }
+        if (value > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function validateLetter(letter, size)
+    {
+        var result = false;
+        var filext = (getExt(letter)).toLowerCase();
+        result = ((letter != null) && (letter != "") && (filext == "jpeg" || filext == "jpg"));
+        return result;
+    }
+    function getExt(filename) {
+        var dot_pos = filename.lastIndexOf(".");
+        if (dot_pos == -1)
+            return "";
+        return filename.substr(dot_pos + 1).toLowerCase();
+    }
+    function checkFileSize(size, requiredSize) {
+        var result = false;
+        if (size != 0 && size <= requiredSize) {
+            result = true;
+        }
+        return result;
+    }
+</script>
+

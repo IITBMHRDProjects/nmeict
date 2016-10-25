@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">       
+    <meta name="description" content="website description" />
+    <meta name="keywords" content="website keywords, website keywords" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>'Project Name' | Empowerment of Students & Teachers through Synchronous and Asynchronous Instruction</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" href="css/tipTip.css"/>
+    <link rel="stylesheet" href="css/css3-buttons.css"/>
+    <!-- modernizr enables HTML5 elements and feature detects -->
+    <script type="text/javascript" src="js/modernizr-1.5.min.js"></script>   
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery.easing-sooper.js"></script>
+    <script type="text/javascript" src="js/jquery.sooperfish.js"></script>
+    <script type="text/javascript" src="js/project_common.js"></script>
+    <script type="text/javascript" src="js/jquery.tipTip.minified.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".tipTip").tipTip({defaultPosition: "right"});
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('ul.sf-menu').sooperfish();
+            $('.top').click(function() {
+                $('html, body').animate({scrollTop: 0}, 'fast');
+                return false;
+            });
+            $("#settingoptions").hide();
+            $("#showmore").click(function() {
+                $("#settingoptions").slideToggle();
+            });
+
+            $(document).bind('click', function(e) {
+                $("#settingoptions").hide();
+            });
+        });
+    </script>
+    <script>
+        function onStateChangeRc(val) {
+            if (val == '-1') {
+
+            } else {
+                fetchRemoteCenter(val)
+            }
+        }
+
+        function onError(jqXHR, textStatus) {
+            alert("Error : " + textStatus);
+        }
+
+        function fetchRemoteCenter(stateID) {
+            var data = "stateid=" + stateID;
+            $.ajax({
+                url: "pages/DAOSetRemoteCenterStateWise.jsp",
+                type: "GET",
+                data: data,
+                dataType: "json",
+                success: setRemoteCenterlist,
+                error: onError
+            });
+        }
+
+        function setRemoteCenterlist(data) {
+            $("#remotecenter").html("");
+            var option = "<option value=\"-1\">--Select a Remote Center--</option>";
+            for (var i = 0; i < data.length; i++) {
+                option += "<option value=\"" + data[i].remoteCenterId + "\">" + data[i].remoteCenterName + ", " + data[i].rc_city + "</option>";
+            }
+            $("#remotecenter").append(option);
+
+        }
+
+        function validateServey() {
+            document.getElementById("checkboxError").innerHTML = "";
+            document.getElementById("selectError").innerHTML = "";
+            document.getElementById("txtboxError").innerHTML = "";
+            document.getElementById("yesnoError").innerHTML = "";
+            document.getElementById("question5Error").innerHTML = "";
+            document.getElementById("stateError").style.display = "none";
+            document.getElementById("remotecenterError").style.display = "none";
+            document.getElementById("emailError").style.display = "none";
+
+            var value = 0;
+            var resons = document.getElementsByName("surveyform.field1");
+            var txt = "";
+            var i;
+            for (i = 0; i < resons.length; i++) {
+                if (resons[i].checked) {
+                    txt = txt + resons[i].value + "$";
+                }
+            }
+            var txtval = txt.trim();
+            if (txtval.trim() == '') {
+                value = 1;
+                document.getElementById("checkboxError").innerHTML = "Please Select Any One Answer";
+            }
+
+            var select = document.getElementById("select1").value;
+            if (select == '-1') {
+                value = 1;
+                document.getElementById("selectError").innerHTML = "Please Select Any One option";
+            }
+
+            var txtbox = document.getElementById("textbox1").value;
+            if (txtbox.trim() == '') {
+                value = 1;
+                document.getElementById("txtboxError").innerHTML = "Please Enter Answer";
+            } else {
+                /* if (!isStringInRange(txtbox.trim(), 5, 150) || !remarkValidator(txtbox.trim())) {
+                 //borderRedError("homeAddress");
+                 document.getElementById("txtboxError").innerHTML = "Please Enter Answer (use only valid charactor)";
+                 value++;
+                 }*/
+            }
+
+            var radio1 = document.getElementById("radioY");
+            var radio2 = document.getElementById("radioN");
+            if (radio1.checked == false && radio2.checked == false) {
+                value = 1;
+                document.getElementById("yesnoError").innerHTML = "Please select yes / no";
+            }
+
+            /*if (radio1.checked == true) {
+             var resons1 = document.getElementsByName("surveyform.field5");
+             var txt1 = "";
+             var i;
+             for (i = 0; i < resons1.length; i++) {
+             if (resons1[i].checked) {
+             txt1 = txt1 + resons1[i].value + "$";
+             }
+             }
+             var txtval1 = txt1.trim();
+             if (txtval1.trim() == '') {
+             value = 1;
+             document.getElementById("question5Error").innerHTML = "Please Select Any One Option";
+             }
+             }*/
+
+            var state = document.getElementById("state").value;
+            if (state == "-1")
+            {
+                //borderRedError("state");
+                document.getElementById('stateError').style.display = "inline";
+                value = 1;
+            }
+
+            var rc = document.getElementById("remotecenter").value;
+            if (rc == "" || rc == null || rc == "-1")
+            {
+                // borderRedError("remotecenter");
+                document.getElementById("remotecenterError").style.display = "inline";
+                value = 1;
+            }
+
+            var email = document.getElementById("email").value.trim();
+            email = email.toLowerCase();
+            if ((email) == "" || !emailValidator(email)) {
+                //borderRedError("email");
+                document.getElementById("emailError").style.display = "inline";
+                value = 1;
+            }
+
+            if (value > 0) {
+                return false;
+            }
+
+        }
+
+        function emailValidator(email) {
+            var result = false;
+            var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+            if (email.match(emailExp)) {
+                result = true;
+            }
+            return result;
+        }
+
+        function isStringInRange(str, minLength, maxLength) {
+            var result = false;
+            str = alltrim(str);
+            if (isStringValid(str)) {
+                if (str.length >= minLength && str.length <= maxLength) {
+                    result = true;
+                }
+            }
+            return result;
+        }
+
+        function remarkValidator(remark) {
+            var result = false;
+            var remarkstr = /^[A-Za-z0-9 .\r\n\\/()&:',_;-]*$/;
+            if (remark.match(remarkstr)) {
+                result = true;
+            }
+            return result;
+        }
+
+        function isStringValid(str) {
+            var result = true;
+            str = alltrim(str);
+            if (str == "") {
+                result = false;
+            }
+            return result;
+        }
+
+        function alltrim(str)
+        {
+            return str.replace(/^\s+|\s+$/g, '');
+        }
+
+        function displayQustion(value) {
+            if (value == "no") {
+                document.getElementById("askedYesPart").style.display = "none";
+                document.getElementById("askedNoPart").style.display = "inline";
+            } else if (value == "yes") {
+                document.getElementById("askedNoPart").style.display = "none";
+                document.getElementById("askedYesPart").style.display = "inline";
+            }
+        }
+
+        function validateSendSurveyForm() {
+            var value = 0;
+            var wid = document.getElementById("workshopid").value;
+            if (wid == "" || wid.trim().length == 0) {
+                document.getElementById("widError").style.display = "inline";
+                value = 1;
+            } else {
+                document.getElementById("widError").style.display = "none";
+            }
+            if (value > 0) {
+                return false;
+            }
+        }
+
+        function onlyNumbers1(evt)
+        {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+
+            return true;
+        }
+
+        function validateServey1() {
+            var value = 0;
+            document.getElementById("noPartError").style.display = "none";
+            document.getElementById("yesPart1_1Error").style.display = "none";
+            document.getElementById("yesPart1_2Error").style.display = "none";
+            document.getElementById("yesPart1_3Error").style.display = "none";
+            document.getElementById("yesPart1_4Error").style.display = "none";
+            document.getElementById("yesPart1_5Error").style.display = "none";
+            document.getElementById("yesPart1_6Error").style.display = "none";
+            document.getElementById("yesPart1_7Error").style.display = "none";
+            document.getElementById("yesPart1_8Error").style.display = "none";
+
+            document.getElementById("yesPart2_1_1Error").style.display = "none";
+            document.getElementById("yesPart2_1_2Error").style.display = "none";
+            document.getElementById("yesPart2_1_3Error").style.display = "none";
+            document.getElementById("yesPart2_1_4Error").style.display = "none";
+
+            document.getElementById("yesPart2_2_1Error").style.display = "none";
+            document.getElementById("yesPart2_2_2Error").style.display = "none";
+            document.getElementById("yesPart2_2_3Error").style.display = "none";
+            document.getElementById("yesPart2_2_4Error").style.display = "none";
+
+            document.getElementById("yesPart2_3_1Error").style.display = "none";
+            document.getElementById("yesPart2_3_2Error").style.display = "none";
+            document.getElementById("yesPart2_3_3Error").style.display = "none";
+            document.getElementById("yesPart2_3_4Error").style.display = "none";
+
+            document.getElementById("yesPartQ3Error").style.display = "none";
+            document.getElementById("yesPartQ4Error").style.display = "none";
+            document.getElementById("yesPartQ5Error").style.display = "none";
+            document.getElementById("yesPartQ7Error").style.display = "none";
+            document.getElementById("yesPartQ8Error").style.display = "none";
+            document.getElementById("yesPartQ9Error").style.display = "none";
+            document.getElementById("emailError").style.display = "none";
+            document.getElementById("nameError").style.display = "none";
+            document.getElementById("designationError").style.display = "none";
+
+            var rates = document.getElementsByName('surveyform.YesNofield');
+            var yesno_value;
+            for (var i = 0; i < rates.length; i++) {
+                if (rates[i].checked) {
+                    yesno_value = rates[i].value;
+                }
+            }
+
+            var nopart_value;
+            if (yesno_value == 'no') {
+                var nopart = document.getElementsByName('surveyform.noPartQ1');
+
+                var np_check = 0;
+                for (var a = 0; a < nopart.length; a++) {
+                    if (nopart[a].checked) {
+                        np_check = 1;
+                        nopart_value = nopart[a].value
+                    }
+                }
+
+                if (np_check == 0) {
+                    document.getElementById("noPartError").style.display = "inline";
+                    value = 1;
+                } else if (np_check == 1) {
+                    if (nopart_value == 'D') {
+                        var sur_pdf = document.getElementById("surveypdf").value;
+                        if (sur_pdf.trim() == "") {
+                            document.getElementById("surveypdfError").style.display = "inline";
+                            value = 1;
+                        } else {
+                            var size = document.getElementById("surveypdf").files[0].size;
+                            var sizerr = checkFileSize(size, 1048576);
+                            var exterr = validateLetter(sur_pdf, size)
+                            if (sizerr == false || exterr == false) {
+                                document.getElementById("surveypdfError").style.display = "inline";
+                                value = 1;
+                            }
+                        }
+                    }
+                }
+            } else if (yesno_value == 'yes') {
+                var yespartQ1_1 = document.getElementsByName('surveyform.yesPartQ1_1');
+                var yespartQ1_2 = document.getElementsByName('surveyform.yesPartQ1_2');
+                var yespartQ1_3 = document.getElementsByName('surveyform.yesPartQ1_3');
+                var yespartQ1_4 = document.getElementsByName('surveyform.yesPartQ1_4');
+                var yespartQ1_5 = document.getElementsByName('surveyform.yesPartQ1_5');
+                var yespartQ1_6 = document.getElementsByName('surveyform.yesPartQ1_6');
+                var yespartQ1_7 = document.getElementsByName('surveyform.yesPartQ1_7');
+                var yespartQ1_8 = document.getElementsByName('surveyform.yesPartQ1_8');
+
+                var yespartQ2_1_1 = document.getElementsByName('surveyform.yesPartQ2_1_1');
+                var yespartQ2_1_2 = document.getElementsByName('surveyform.yesPartQ2_1_2');
+                var yespartQ2_1_3 = document.getElementsByName('surveyform.yesPartQ2_1_3');
+                var yespartQ2_1_4 = document.getElementsByName('surveyform.yesPartQ2_1_4');
+
+                var yespartQ2_2_1 = document.getElementsByName('surveyform.yesPartQ2_2_1');
+                var yespartQ2_2_2 = document.getElementsByName('surveyform.yesPartQ2_2_2');
+                var yespartQ2_2_3 = document.getElementsByName('surveyform.yesPartQ2_2_3');
+                var yespartQ2_2_4 = document.getElementsByName('surveyform.yesPartQ2_2_4');
+
+                var yespartQ2_3_1 = document.getElementsByName('surveyform.yesPartQ2_3_1');
+                var yespartQ2_3_2 = document.getElementsByName('surveyform.yesPartQ2_3_2');
+                var yespartQ2_3_3 = document.getElementsByName('surveyform.yesPartQ2_3_3');
+                var yespartQ2_3_4 = document.getElementsByName('surveyform.yesPartQ2_3_4');
+
+                var yespartQ3 = document.getElementsByName('surveyform.yesPartQ3');
+                var yespartQ4 = document.getElementsByName('surveyform.yesPartQ4');
+                var yespartQ5 = document.getElementsByName('surveyform.yesPartQ5');
+                var yespartQ7 = document.getElementsByName('surveyform.yesPartQ7');
+                var yespartQ8 = document.getElementsByName('surveyform.yesPartQ8');
+                var yespartQ9 = document.getElementsByName('surveyform.yesPartQ9');
+                var q3_ck = 0, q4_ck = 0, q5_ck = 0;
+                var q1_1_ck = 0, q1_2_ck = 0, q1_3_ck = 0, q1_4_ck = 0, q1_5_ck = 0, q1_6_ck = 0, q1_7_ck = 0, q1_8_ck = 0;
+                var q2_1_1_ck = 0, q2_1_2_ck = 0, q2_1_3_ck = 0, q2_1_4_ck = 0;
+                var q2_2_1_ck = 0, q2_2_2_ck = 0, q2_2_3_ck = 0, q2_2_4_ck = 0;
+                var q2_3_1_ck = 0, q2_3_2_ck = 0, q2_3_3_ck = 0, q2_3_4_ck = 0;
+                var q7_ck = 0, q8_ck = 0, q9_ck = 0;
+
+                for (var a = 0; a < yespartQ1_1.length; a++) {
+                    if (yespartQ1_1[a].checked) {
+                        q1_1_ck = 1;
+                    }
+                }
+                if (q1_1_ck == 0) {
+                    document.getElementById("yesPart1_1Error").style.display = "inline";
+                    value = 1;
+                }
+
+                for (var a = 0; a < yespartQ1_2.length; a++) {
+                    if (yespartQ1_2[a].checked) {
+                        q1_2_ck = 1;
+                    }
+                }
+                if (q1_2_ck == 0) {
+                    document.getElementById("yesPart1_2Error").style.display = "inline";
+                    value = 1;
+                }
+
+                for (var a = 0; a < yespartQ1_3.length; a++) {
+                    if (yespartQ1_3[a].checked) {
+                        q1_3_ck = 1;
+                    }
+                }
+                if (q1_3_ck == 0) {
+                    document.getElementById("yesPart1_3Error").style.display = "inline";
+                    value = 1;
+                }
+
+                for (var a = 0; a < yespartQ1_4.length; a++) {
+                    if (yespartQ1_4[a].checked) {
+                        q1_4_ck = 1;
+                    }
+                }
+                if (q1_4_ck == 0) {
+                    document.getElementById("yesPart1_4Error").style.display = "inline";
+                    value = 1;
+                }
+
+
+                for (var a = 0; a < yespartQ1_5.length; a++) {
+                    if (yespartQ1_5[a].checked) {
+                        q1_5_ck = 1;
+                    }
+                }
+                if (q1_5_ck == 0) {
+                    document.getElementById("yesPart1_5Error").style.display = "inline";
+                    value = 1;
+                }
+
+                for (var a = 0; a < yespartQ1_6.length; a++) {
+                    if (yespartQ1_6[a].checked) {
+                        q1_6_ck = 1;
+                    }
+                }
+                if (q1_6_ck == 0) {
+                    document.getElementById("yesPart1_6Error").style.display = "inline";
+                    value = 1;
+                }
+
+                for (var a = 0; a < yespartQ1_7.length; a++) {
+                    if (yespartQ1_7[a].checked) {
+                        q1_7_ck = 1;
+                    }
+                }
+                if (q1_7_ck == 0) {
+                    document.getElementById("yesPart1_7Error").style.display = "inline";
+                    value = 1;
+                }
+
+                for (var a = 0; a < yespartQ1_8.length; a++) {
+                    if (yespartQ1_8[a].checked) {
+                        q1_8_ck = 1;
+                    }
+                }
+                if (q1_8_ck == 0) {
+                    document.getElementById("yesPart1_8Error").style.display = "inline";
+                    value = 1;
+                }
+
+                for (var a = 0; a < yespartQ2_1_1.length; a++) {
+                    if (yespartQ2_1_1[a].checked) {
+                        q2_1_1_ck = 1;
+                    }
+                }
+                if (q2_1_1_ck == 0) {
+                    document.getElementById("yesPart2_1_1Error").style.display = "inline";
+                    value = 1;
+                }
+
+                for (var a = 0; a < yespartQ2_1_2.length; a++) {
+                    if (yespartQ2_1_2[a].checked) {
+                        q2_1_2_ck = 1;
+                    }
+                }
+                if (q2_1_2_ck == 0) {
+                    document.getElementById("yesPart2_1_2Error").style.display = "inline";
+                    value = 1;
+                }
+
+                for (var a = 0; a < yespartQ2_1_3.length; a++) {
+                    if (yespartQ2_1_3[a].checked) {
+                        q2_1_3_ck = 1;
+                    }
+                }
+                if (q2_1_3_ck == 0) {
+                    document.getElementById("yesPart2_1_3Error").style.display = "inline";
+                    value = 1;
+                }
+
+                for (var a = 0; a < yespartQ2_1_4.length; a++) {
+                    if (yespartQ2_1_4[a].checked) {
+                        q2_1_4_ck = 1;
+                    }
+                }
+                if (q2_1_4_ck == 0) {
+                    document.getElementById("yesPart2_1_4Error").style.display = "inline";
+                    value = 1;
+                }
+
+
+                for (var a = 0; a < yespartQ2_2_1.length; a++) {
+                    if (yespartQ2_2_1[a].checked) {
+                        q2_2_1_ck = 1;
+                    }
+                }
+                if (q2_2_1_ck == 0) {
+                    document.getElementById("yesPart2_2_1Error").style.display = "inline";
+                    value = 1;
+                }
+
+                for (var a = 0; a < yespartQ2_2_2.length; a++) {
+                    if (yespartQ2_2_2[a].checked) {
+                        q2_2_2_ck = 1;
+                    }
+                }
+                if (q2_2_2_ck == 0) {
+                    document.getElementById("yesPart2_2_2Error").style.display = "inline";
+                    value = 1;
+                }
+
+                for (var a = 0; a < yespartQ2_2_3.length; a++) {
+                    if (yespartQ2_2_3[a].checked) {
+                        q2_2_3_ck = 1;
+                    }
+                }
+                if (q2_2_3_ck == 0) {
+                    document.getElementById("yesPart2_2_3Error").style.display = "inline";
+                    value = 1;
+                }
+
+                for (var a = 0; a < yespartQ2_2_4.length; a++) {
+                    if (yespartQ2_2_4[a].checked) {
+                        q2_2_4_ck = 1;
+                    }
+                }
+                if (q2_2_4_ck == 0) {
+                    document.getElementById("yesPart2_2_4Error").style.display = "inline";
+                    value = 1;
+                }
+
+
+
+                for (var a = 0; a < yespartQ2_3_1.length; a++) {
+                    if (yespartQ2_3_1[a].checked) {
+                        q2_3_1_ck = 1;
+                    }
+                }
+                if (q2_3_1_ck == 0) {
+                    document.getElementById("yesPart2_3_1Error").style.display = "inline";
+                    value = 1;
+                }
+
+                for (var a = 0; a < yespartQ2_3_2.length; a++) {
+                    if (yespartQ2_3_2[a].checked) {
+                        q2_3_2_ck = 1;
+                    }
+                }
+                if (q2_3_2_ck == 0) {
+                    document.getElementById("yesPart2_3_2Error").style.display = "inline";
+                    value = 1;
+                }
+
+                for (var a = 0; a < yespartQ2_3_3.length; a++) {
+                    if (yespartQ2_3_3[a].checked) {
+                        q2_3_3_ck = 1;
+                    }
+                }
+                if (q2_3_3_ck == 0) {
+                    document.getElementById("yesPart2_3_3Error").style.display = "inline";
+                    value = 1;
+                }
+
+                for (var a = 0; a < yespartQ2_3_4.length; a++) {
+                    if (yespartQ2_3_4[a].checked) {
+                        q2_3_4_ck = 1;
+                    }
+                }
+                if (q2_3_4_ck == 0) {
+                    document.getElementById("yesPart2_3_4Error").style.display = "inline";
+                    value = 1;
+                }
+
+
+                for (var a = 0; a < yespartQ3.length; a++) {
+                    if (yespartQ3[a].checked) {
+                        q3_ck = 1;
+                    }
+                }
+                if (q3_ck == 0) {
+                    document.getElementById("yesPartQ3Error").style.display = "inline";
+                    value = 1;
+                }
+
+                for (var a = 0; a < yespartQ4.length; a++) {
+                    if (yespartQ4[a].checked) {
+                        q4_ck = 1;
+                    }
+                }
+                if (q4_ck == 0) {
+                    document.getElementById("yesPartQ4Error").style.display = "inline";
+                    value = 1;
+                }
+
+                for (var a = 0; a < yespartQ5.length; a++) {
+                    if (yespartQ5[a].checked) {
+                        q5_ck = 1;
+                    }
+                }
+                if (q5_ck == 0) {
+                    document.getElementById("yesPartQ5Error").style.display = "inline";
+                    value = 1;
+                }
+
+                for (var a = 0; a < yespartQ7.length; a++) {
+                    if (yespartQ7[a].checked) {
+                        q7_ck = 1;
+                    }
+                }
+                if (q7_ck == 0) {
+                    document.getElementById("yesPartQ7Error").style.display = "inline";
+                    value = 1;
+                }
+
+
+                for (var a = 0; a < yespartQ8.length; a++) {
+                    if (yespartQ8[a].checked) {
+                        q8_ck = 1;
+                    }
+                }
+                if (q8_ck == 0) {
+                    document.getElementById("yesPartQ8Error").style.display = "inline";
+                    value = 1;
+                }
+
+
+                for (var a = 0; a < yespartQ9.length; a++) {
+                    if (yespartQ9[a].checked) {
+                        q9_ck = 1;
+                    }
+                }
+                if (q9_ck == 0) {
+                    document.getElementById("yesPartQ9Error").style.display = "inline";
+                    value = 1;
+                }
+
+                var email = alltrim(document.getElementById("email").value.toLowerCase());
+                if ((email) == "" || !emailValidator(email)) {
+                    //borderRedError("email");
+                    document.getElementById("emailError").style.display = "inline";
+                    value = 1;
+                }
+
+                var Name = alltrim(document.getElementById("pname").value);
+                if (Name == "") {
+                    document.getElementById("nameError").style.display = "inline";
+                    value = 1;
+                }
+
+                var designation = document.getElementsByName('surveyform.designation');
+                var des_ck = 0;
+                for (var a = 0; a < designation.length; a++) {
+                    if (designation[a].checked) {
+                        des_ck = 1;
+                    }
+                }
+                if (des_ck == 0) {
+                    document.getElementById("designationError").style.display = "inline";
+                    value = 1;
+                }
+
+            } else {
+                alert('Please select Yes / No');
+                value = 1;
+            }
+            //value = 1;
+            if (value > 0) {
+                scrollWin();
+                return false;
+            }
+
+            /*var val = document.getElementById("").value;
+             if (val == 'no') {
+             
+             } else if (val == 'yes') {
+             
+             } else {
+             value = 1;
+             }*/
+        }
+
+        function displayPDF() {
+            document.getElementById("browsepdf").style.display = "inline";
+        }
+
+        function removePDF() {
+            document.getElementById("browsepdf").style.display = "none";
+        }
+
+        function checkFileSize(size, requiredSize) {
+            var result = false;
+            if (size != 0 && size <= requiredSize) {
+                result = true;
+            }
+            return result;
+        }
+
+        function validateLetter(letter, size)
+        {
+            var result = false;
+            var filext = (getExt(letter)).toLowerCase();
+            result = ((letter != null) && (letter != "") && (filext == "pdf"));
+            return result;
+        }
+
+        function getExt(filename) {
+            var dot_pos = filename.lastIndexOf(".");
+            if (dot_pos == -1)
+                return "";
+            return filename.substr(dot_pos + 1).toLowerCase();
+        }
+
+        function scrollWin() {
+            window.scrollTo(0, 10);
+        }
+    </script>      
+</head>

@@ -1,0 +1,168 @@
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">       
+    <meta name="description" content="website description" />
+    <meta name="keywords" content="website keywords, website keywords" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>'Project Name' | Empowerment of Students & Teachers through Synchronous and Asynchronous Instruction</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" href="css/tipTip.css"/>
+    <link rel="stylesheet" href="css/css3-buttons.css"/>
+    <!-- modernizr enables HTML5 elements and feature detects -->
+    <script type="text/javascript" src="js/modernizr-1.5.min.js"></script>   
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery.easing-sooper.js"></script>
+    <script type="text/javascript" src="js/jquery.sooperfish.js"></script>
+    <script type="text/javascript" src="js/project_common.js"></script>
+    <script type="text/javascript" src="js/jquery.tipTip.minified.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".tipTip").tipTip({defaultPosition: "right"});
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('ul.sf-menu').sooperfish();
+            $('.top').click(function() {
+                $('html, body').animate({scrollTop: 0}, 'fast');
+                return false;
+            });
+            $("#settingoptions").hide();
+            $("#showmore").click(function(e) {
+                var x=e.pageX;
+                var tmpx=x-200;
+                $("#settingoptions").css({left: tmpx});
+                $("#settingoptions").slideToggle();
+            });
+
+            $(document).bind('click', function(e) {
+                $("#settingoptions").hide();
+            });
+        });
+    </script>
+    <script>
+        function getContentData(val) {
+            if (val == -1) {
+                document.getElementById("htmlcontent").value = "";
+                document.getElementById("content").innerHTML = "";
+                document.getElementById("txtcomment").value = "";
+                document.getElementById("class_type1").checked = false;
+                document.getElementById("class_type1").checked = false;
+                document.getElementById("class_type3").checked = false;
+                document.getElementById("commentError").innerHTML = "";
+            } else {
+                document.getElementById("commentError").innerHTML = "";
+                fetchContent(val);
+            }
+        }
+
+        function onError(jqXHR, textStatus) {
+            alert("Error : " + textStatus);
+        }
+
+        function fetchContent(val) {
+            var data = "contenttype=" + val;
+            $.ajax({
+                url: "pages/DAOSetPageContent.jsp",
+                type: "GET",
+                data: data,
+                dataType: "json",
+                success: setContent,
+                error: onError
+            });
+        }
+
+        function setContent(data) {
+            document.getElementById("txtcomment").value = "";
+            document.getElementById("class_type1").checked = false;
+            document.getElementById("class_type2").checked = false;
+            document.getElementById("class_type3").checked = false;
+            for (var i = 0; i < data.length; i++) {
+                document.getElementById("content").innerHTML = data[i].content;
+                document.getElementById("htmlcontent").value = data[i].content;
+                document.getElementById("txtcomment").value = data[i].comment;
+                if (data[i].class_type == 1) {
+                    document.getElementById("class_type1").checked = true;
+                } else if (data[i].class_type == 2) {
+                    document.getElementById("class_type2").checked = true;
+                } else if(data[i].class_type == 3){
+                    document.getElementById("class_type3").checked = true;
+                }
+            }
+        }
+
+        function previewContent() {
+            var txtcontent = document.getElementById("htmlcontent").value;
+            document.getElementById("content").innerHTML = txtcontent;
+        }
+
+        function submitContent(userId) {
+            document.getElementById("commentError").innerHTML = "";
+            var r = confirm("Are you sure you want to submit ?")
+            if (r == true) {
+                var text_content = document.getElementById("htmlcontent").value;
+                var selectId = document.getElementById("selectPageType").value;
+                var comment = document.getElementById("txtcomment").value;
+                if (selectId != -1 && text_content.trim().length != 0 && comment.trim().length != 0) {
+                    fetchSubmitContent(text_content, selectId, userId, comment)
+                } else if (comment.trim().length == 0) {
+                    alert("Please enter Comments.")
+                    document.getElementById("commentError").innerHTML = "Please enter comments.";
+                    var myElement = document.getElementById("txtcomment");
+                    var position = getPosition(myElement);
+                    window.scrollTo(position.x, position.y);
+                }
+            } else {
+
+            }
+        }
+
+        function fetchSubmitContent(val, page, userId, comment) {
+            val = encodeURIComponent(val);
+            var data = "content=" + val + "&page=" + page + "&userId=" + userId + "&comments=" + comment;
+            $.ajax({
+                url: "pages/DAOSubmitContent.jsp",
+                type: "GET",
+                data: data,
+                dataType: "json",
+                success: setSubmitContent,
+                error: onError
+            });
+        }
+
+        function setSubmitContent(data) {
+            if (data == "success") {
+                alert('Update Successfull.')
+            } else if (data == "fail") {
+                alert('Update Failed..')
+            } else if (data == "null") {
+                alert('Update Failed...No content')
+            } else {
+                alert('Ajax Error')
+            }
+        }
+
+        function resetContent() {
+            document.getElementById("htmlcontent").value = "";
+            document.getElementById("content").innerHTML = "";
+            document.getElementById("txtcomment").value = "";
+            document.getElementById("class_type1").checked = false;
+            document.getElementById("class_type2").checked = false;
+            document.getElementById("class_type3").checked = false;
+            document.getElementById("selectPageType").value = "-1";
+            document.getElementById("commentError").innerHTML ="";
+        }
+
+        function getPosition(element) {
+            var xPosition = 0;
+            var yPosition = 0;
+
+            while (element) {
+                xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+                yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+                element = element.offsetParent;
+            }
+            return {x: xPosition, y: yPosition};
+        }
+    </script>
+</head>
+

@@ -1,0 +1,408 @@
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">       
+    <meta name="description" content="website description" />
+    <meta name="keywords" content="website keywords, website keywords" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>'Project Name' | Empowerment of Students & Teachers through Synchronous and Asynchronous Instruction</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" href="css/tipTip.css"/>
+    <link rel="stylesheet" href="css/css3-buttons.css"/>
+    <!-- modernizr enables HTML5 elements and feature detects -->
+    <script type="text/javascript" src="js/modernizr-1.5.min.js"></script>   
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery.easing-sooper.js"></script>
+    <script type="text/javascript" src="js/jquery.sooperfish.js"></script>
+    <script type="text/javascript" src="js/project_common.js"></script>
+    <script type="text/javascript" src="js/jquery.tipTip.minified.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".tipTip").tipTip({defaultPosition: "right"});
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('ul.sf-menu').sooperfish();
+            $('.top').click(function() {
+                $('html, body').animate({scrollTop: 0}, 'fast');
+                return false;
+            });
+            $("#settingoptions").hide();
+            $("#showmore").click(function() {
+                $("#settingoptions").slideToggle();
+            });
+
+            $(document).bind('click', function(e) {
+                $("#settingoptions").hide();
+            });
+        });
+    </script>   
+    <style type="text/css">
+        @import "template_table_2/jquery.dataTables.css";
+    </style>
+
+    <!--css added for the pagination and table css-->
+    <script type="text/javascript" language="javascript" src="template_table_2/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" language="javascript" src="template_table_2/jquery.dataTables.js"></script>
+    <script language="JavaScript" src="js/jquery.tipTip.minified.js"></script>       
+    <script type="text/javascript">
+        $(function() {
+            $(".tipTip").tipTip({defaultPosition: "right"});
+        });
+    </script>
+    <script type="text/javascript" language="JavaScript" src="js/ajaxedit.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <script type="text/javascript">
+        function viewSeats(workshopid) {
+            window.open("viewRCCapacity.html?workshopid=" + workshopid + "&state=0&callFrom=2");
+        }
+        function changeTest(update, workshopid, status) {
+            var rcid = document.getElementById('rcid').value;
+            window.location.href = "participantDetails.html?update=" + update + "&workshopid=" + workshopid + "&status=" + status + "&rcid=" + rcid;
+            //            var rcid = document.getElementById('rcid').value;
+            //            fetchParticipantDetails1(rcid,workshopid,status);
+            //            fetchParticipantCount(rcid,workshopid,status);
+        }
+        function checkStatus(workshopid, status) {
+            rcid = document.getElementById('rcid').value;
+            fetchParticipantDetails1(rcid, workshopid, status);
+            fetchParticipantCount(rcid, workshopid, status);
+        }
+        function checkStatus1(workshopid, status) {
+            var rcid = "all";
+            fetchParticipantDetails1(rcid, workshopid, status);
+            fetchParticipantCount(rcid, workshopid, status);
+        }
+
+        function changeStatus(i, participantid, status, email, context)
+        {
+            var cc = document.getElementById("cc").value;
+            if (status == 'Registration Invalid') {
+                document.getElementById("hide_userdata").value = i + "*" + participantid + "*" + status + "*" + email + "*" + context;
+                call_modalBox();
+            } else {
+                var moodle_coursename = document.getElementById("moodle_coursename").value;
+                var iitbx_coursename = document.getElementById("iitbx_coursename").value;
+                var lms_moodle = document.getElementById("lms_moodle").value;
+                var lms_iitbx = document.getElementById("lms_iitbx").value;
+                var checkstatus = "none";
+                var rc_flag = 0;
+                var rc_payment_flag=0;
+                if (cc == '8') {
+                    rc_flag = document.getElementById("without_RC").value;
+                    rc_payment_flag = document.getElementById("rc_payment_if_required").value;
+                    checkstatus = document.getElementById("faculty_" + i).checked;
+                }
+                if (lms_moodle == 1 && lms_iitbx == 0)
+                {
+                    if (moodle_coursename != "")
+                        changeParticipantStatus(i, participantid, status, email, context, cc, lms_moodle, checkstatus, rc_flag,rc_payment_flag);
+                    else
+                        alert("Please update the moodle coursename before changing the status of participants");
+                }
+                if (lms_moodle == 0 && lms_iitbx == 1) {
+                    if (iitbx_coursename != "")
+                        changeParticipantStatus(i, participantid, status, email, context, cc, lms_moodle, checkstatus, rc_flag,rc_payment_flag);
+                    else
+                        alert("Please update the IITBx coursename before changing the status of participants");
+                }
+                if (lms_moodle == 1 && lms_iitbx == 1)
+                {
+                    if (moodle_coursename == "") {
+                        alert("Please update the moodle coursename before changing the status of participants");
+                    } else {
+                        if (iitbx_coursename == "")
+                            alert("Please update the IITBx coursename before changing the status of participants");
+                        else
+                            changeParticipantStatus(i, participantid, status, email, context, cc, lms_moodle, checkstatus, rc_flag,rc_payment_flag);
+                    }
+                }
+            }
+        }
+        var rcid = document.getElementById('rcid').value;
+
+
+        function checkDesignationBox(categorycode) {
+            if (categorycode == 5 || categorycode == 7 || categorycode == 8) {
+                changeDisplays(9);
+            } else {
+                changeDisplays(8);
+            }
+        }
+
+        function checkQualificationBox(categorycode) {
+            if (categorycode == 5 || categorycode == 7 || categorycode == 8) {
+                changeDisplays(10);
+            } else {
+                changeDisplays(9);
+            }
+        }
+        function checkExperienceBox(categorycode) {
+            if (categorycode == 5 || categorycode == 7 || categorycode == 8) {
+                changeDisplays(11);
+
+            } else {
+                changeDisplays(10);
+            }
+        }
+        function checkRegtimeBox(categorycode) {
+            if (categorycode == 5 || categorycode == 7 || categorycode == 8) {
+                changeDisplays(12);
+            } else {
+                changeDisplays(11);
+            }
+        }
+        function checkStreamBox(categorycode) {
+            if (categorycode == 5 || categorycode == 7 || categorycode == 8) {
+                changeDisplays(13);
+            } else {
+                changeDisplays(12);
+            }
+        }
+
+        function changeDisplays(cno)
+        {
+            var table = document.getElementById('participantDetail1');
+            var rows = table.getElementsByTagName('tr');
+            var col = rows[0].getElementsByTagName('th');
+            if (col[cno].style.display == 'none')
+            {
+                col[cno].style.display = '';
+            }
+            else
+            {
+                col[cno].style.display = 'none';
+            }
+            for (var row = 1; row < rows.length; row++)
+            {
+                var col1 = rows[row].getElementsByTagName('td')
+                if (col1[cno].style.display == 'none')
+                {
+                    col1[cno].style.display = '';
+                }
+                else
+                {
+                    col1[cno].style.display = 'none';
+                }
+            }
+        }
+
+        function updateReg(email, workshopid) {
+            window.open("updateDetails.html?email=" + email + "&workshopid=" + workshopid);
+        }
+
+        function submitdata() {
+            var newdata = document.getElementById("hide_userdata").value.split("*");
+            var istatus = newdata[0];
+            var participantid = newdata[1];
+            var status = newdata[2];
+            var email = newdata[3];
+            var context = newdata[4];
+            var resons = document.getElementsByName("invalid_res");
+            var txt = "";
+            var i;
+            for (i = 0; i < resons.length; i++) {
+                if (resons[i].checked) {
+                    txt = txt + resons[i].value + "$";
+                }
+            }
+            document.getElementById("res_code").value = txt;
+            var txtval = txt.trim();
+            var othervalue = document.getElementById("other_msg").value.trim();
+            if (othervalue != '') {
+                var r_code = document.getElementById("res_code").value;
+                document.getElementById("res_code").value = r_code + othervalue + "$";
+            }
+            if (txtval.trim() == '') {
+                if (othervalue == '') {
+                    alert("Please select Any Reason");
+                    document.getElementById("res_code").value = "";
+                } else if (othervalue != '') {
+                    var r_othercode = document.getElementById("res_code").value;
+                    changeStatusForInvalidParticipant(istatus, participantid, status, email, context, cc, r_othercode);
+                    alert("Mail Send Successfully.");
+                }
+            }
+            else if (txtval != null || txtval.trim() != '') {
+                //document.getElementById("res_code").value = txt;
+                var cc = document.getElementById("cc").value;
+                var code = document.getElementById("res_code").value;
+                changeStatusForInvalidParticipant(istatus, participantid, status, email, context, cc, code);
+                alert("Mail Send Successfully.");
+            }
+        }
+
+        function call_modalBox() {
+            // div id which will be used in cover the all screen
+            var id = "#dialog";
+            //Get the screen height and width
+            var maskheight = $(document).height();
+            var maskwidth = $(window).width();
+            //Set height and width to mask to fill up the whole screen
+            $('#mask').css({'width': maskwidth, 'height': maskheight});
+            //transition effect   
+            $('#mask').fadeIn(1000);
+            $('#mask').fadeTo('slow', 0.8);
+            //Get the window height and width
+            var winH = $(window).height();
+            var winW = $(window).width();
+            //Set the popup window to center
+            $(id).css('top', winH / 2 - $(id).height() / 2);
+            $(id).css('left', winW / 2 - $(id).width() / 2);
+            //connecting to database and retrieve data
+            fetclistlookups();
+            //transition effect
+            $(id).fadeIn(2000);
+            // $('#dialog').hide();
+            $("#other_msg").val("");
+            // });
+
+            //if close button is clicked
+            $('.window .close').click(function(e) {
+                // alert("close");
+                e.preventDefault();
+                $('#mask, .window').hide();
+            });
+
+            $('#mask').click(function() {
+                $(this).hide();
+                $('.window').hide();
+            });
+        }
+
+        function showReasons(participantid, status) {
+            showReasons1(participantid, status);
+        }
+
+        function viewAttend(email, wid, pid, name, rc) {
+            window.open("viewAttendanceWT.html?email=" + email + "&workshopid=" + wid + "&participantid=" + pid + "&name=" + name + "&rc=" + rc);
+        }
+
+        function autoEnrollAcceptedParticipants(workshopid, context) {
+            //            sendConfirmedEmailSSM(workshopid, context);            
+            window.open("path/moodle/auto_enroll_accepted_participants.php?workshopid=" + workshopid);
+        }
+
+        function autoEnrollRCC(workshopid, context) {
+            window.open("path/moodle/auto_enroll_RCC.php?workshopid=" + workshopid);
+        }
+
+        function updateCertificateStatus(pid, icount, email) {
+            var checkstatus = "none";
+            checkstatus = document.getElementById("is_eligible_certificate_" + icount).checked;
+            //call function
+            update_CertificateStatus(pid, checkstatus, email, icount);
+        }
+
+        function update_CertificateStatus(participantid, certificateStatus, email, i) {
+            var data = "pid=" + participantid + "&certificate_status=" + certificateStatus + "&email=" + email + "&iitcount=" + i;
+            $.ajax({
+                url: "pages/DAOUpdateFacultyStatus.jsp",
+                type: "GET",
+                data: data,
+                dataType: "json",
+                success: setUpdate_StatusOfFaculty,
+                error: onError
+            });
+        }
+        function setUpdate_StatusOfFaculty(data) {
+            var splitResult = data.split("#");
+            var uRes = splitResult[0];
+            var iitCount = splitResult[1];
+            if (uRes == 0) {
+                //alert("Error in Ajax Call");
+                document.getElementById("saveStatus_" + iitCount).style.display = "inline";
+                document.getElementById("saveStatus_" + iitCount).innerHTML = "<font color='red'>error</font>";
+            } else {
+                document.getElementById("saveStatus_" + iitCount).style.display = "inline";
+                document.getElementById("saveStatus_" + iitCount).innerHTML = "<font color='green'>saved</font>";
+                //alert("Data Updated Successfully !");
+            }
+        }
+
+        function onError(jqXHR, textStatus) {
+            alert("Error : " + textStatus);
+        }
+
+        function confirmchangeStatus(i, participantid, status, email, context) {
+            var r = confirm("Are you sure to cancel " + participantid);
+            if (r == true) {
+                changeStatus(i, participantid, status, email, context);
+            } else {
+
+            }
+        }
+
+
+        function initiateRefund(participantid, workshopid, updatedBy, email) {
+            document.getElementById("refund_type").value = "initiate";
+            document.getElementById("pid_refund_reason").value = participantid;
+            document.getElementById("workshopid_refund_reason").value = workshopid;
+            document.getElementById("updatedBy_refund_reason").value = updatedBy;
+            document.getElementById("email_refund_reason").value = email;
+            call_modalBox1();
+        }
+
+        function initiateRefund1() {
+            var refund_type = document.getElementById("refund_type").value;
+            var participantid = document.getElementById("pid_refund_reason").value;
+            var workshopid = document.getElementById("workshopid_refund_reason").value;
+            var updatedBy = document.getElementById("updatedBy_refund_reason").value;
+            var reasons = document.getElementById("refund_reason").value;
+            var email = document.getElementById("email_refund_reason").value;
+            var workshopName = document.getElementById("workshopName").value;
+            if (reasons == "" || reasons == null) {
+                alert("details cannot be empty");
+                return false;
+            }
+//            alert("inside initiate refund values" + participantid + " " + workshopid + " " + updatedBy + " " + reasons);
+            initiateRefundOfParticipant(participantid, workshopid, reasons, updatedBy, email, workshopName, refund_type);
+            //return false;
+        }
+
+        function call_modalBox1() {
+            // div id which will be used in cover the all screen
+            var id = "#dialog1";
+            //Get the screen height and width
+            var maskheight = $(document).height();
+            var maskwidth = $(window).width();
+            //Set height and width to mask to fill up the whole screen
+            $('#mask').css({'width': maskwidth, 'height': maskheight});
+            //transition effect   
+            $('#mask').fadeIn(1000);
+            $('#mask').fadeTo('slow', 0.8);
+            //Get the window height and width
+            var winH = $(window).height();
+            var winW = $(window).width();
+            //Set the popup window to center
+            $(id).css('top', winH / 2 - $(id).height() / 2);
+            $(id).css('left', winW / 2 - $(id).width() / 2);
+            //transition effect
+            $(id).fadeIn(2000);
+            // $('#dialog').hide();
+            $("#refund_reason").val("");
+            // });
+
+            //if close button is clicked
+            $('.window .close').click(function(e) {
+                // alert("close");
+                e.preventDefault();
+                $('#mask, .window').hide();
+            });
+
+            $('#mask').click(function() {
+                $(this).hide();
+                $('.window').hide();
+            });
+        }
+
+
+        function refund(participantid, workshopid, updatedBy, email) {
+            document.getElementById("refund_type").value = "refund";
+            document.getElementById("pid_refund_reason").value = participantid;
+            document.getElementById("workshopid_refund_reason").value = workshopid;
+            document.getElementById("updatedBy_refund_reason").value = updatedBy;
+            document.getElementById("email_refund_reason").value = email;
+            call_modalBox1();
+        }
+    </script> 
+</head>

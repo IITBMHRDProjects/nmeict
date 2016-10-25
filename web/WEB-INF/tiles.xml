@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ 
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+    
+    <definition name="layout"  template="/template/layout.jsp">  
+        <put-attribute name="title" value="" />
+        <put-attribute name="header" value="/template/header.jsp" />
+        <put-attribute name="sidebar" value="/template/sidebar.jsp"/>
+        <put-attribute name="body" value="" />
+        <put-attribute name="footer" value="/template/footer.jsp" />  
+    </definition>
+    
+    <definition name="layoutAdmin"  template="/template/layoutAdmin.jsp">  
+        <put-attribute name="title" value="" />
+        <put-attribute name="header" value="/template/header.jsp" />
+        <put-attribute name="body" value="" />
+    </definition>
+    
+    <definition name="/home.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/home.jsp" />
+    </definition>
+    
+    <definition name="/About_Us.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/About_Ushead.html"/>
+        <put-attribute name="body" value="/pages/About_Us.jsp" />
+    </definition>
+    <definition name="/login.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/loginhead.html"/>
+        <put-attribute name="body" value="/login.jsp" />
+    </definition>
+    <definition name="/signup.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/registrationhead.html"/>
+        <put-attribute name="body" value="/pages/registrationPage.jsp" />
+    </definition>
+    <definition name="/profile.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/profilehead.html"/>
+        <put-attribute name="body" value="/pages/updateProfile.jsp" />
+    </definition>
+    <definition name="/profileupdatesuccessful.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/profileUpdateSuccessHead.html"/>
+        <put-attribute name="body" value="/pages/profileupdatedSuccessfully.jsp" />
+    </definition>
+    <definition name="/confirm.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/confirm.jsp" />
+    </definition>
+    <definition name="/thankyou.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/thankyou.jsp" />
+    </definition>
+    <definition name="/invalid.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/invalid.jsp" />
+    </definition>
+    <definition name="/changePass.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/changePassHead.html"/>
+        <put-attribute name="body" value="/pages/changePass.jsp" />
+    </definition>
+    <definition name="/passChangeSuccess.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/passChangeSuccessHead.html"/>
+        <put-attribute name="body" value="/pages/passChangeSuccess.jsp" />
+    </definition>
+    <definition name="/tempPassword.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/changePassHead.html"/>
+        <put-attribute name="body" value="/pages/tempPassword.jsp" />
+    </definition>
+    <definition name="/accessaccount.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/accessaccounthead.html"/>
+        <put-attribute name="body" value="/pages/accessaccount.jsp" />
+    </definition>
+    <definition name="/accessaccount1.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/accessaccounthead.html"/>
+        <put-attribute name="body" value="/pages/accessaccount.jsp?tmp=ARlink" />
+    </definition>
+    <definition name="/accessaccountSuccess.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/accessaccountSuccess.jsp" />
+    </definition>
+    <definition name="/contactus.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/contactus.html"/>
+        <put-attribute name="body" value="/pages/contactus.jsp" />
+    </definition>
+    <definition name="/contactusSuccess.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/contactus.html"/>
+        <put-attribute name="body" value="/pages/contactussuccess.jsp" />
+    </definition>
+    <definition name="/team.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/teamhead.html"/>
+        <put-attribute name="body" value="/pages/team.jsp" />
+    </definition>
+    <definition name="/faq.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/faqhead.html"/>
+        <put-attribute name="body" value="/pages/faq.jsp" />
+    </definition>
+    <definition name="/gallery.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/galleryhead.html"/>
+        <put-attribute name="body" value="/pages/gallery.jsp" />
+    </definition>
+    <definition name="/downloads.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/downloadshead.html"/>
+        <put-attribute name="body" value="/pages/downloads.jsp" />
+    </definition>
+    <definition name="/workshopRegistration.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/WorkshopRegistrationHead.html"/>
+        <put-attribute name="body" value="/pages/workshopRegistration.jsp" />
+    </definition>
+    <definition name="/participantList.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/participantList.jsp" />
+    </definition>
+    <definition name="/announcements.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/announcements.jsp" />
+    </definition>
+    <definition name="/workshopContent.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/workshopContent.jsp" />
+    </definition>
+    <definition name="/workshopsConducted.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/workshopsConducted.jsp" />
+    </definition>
+    <definition name="/coordinatorList.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/coordinatorList.jsp" />
+    </definition>
+    <definition name="/workshopDetails.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/workshopDetails.jsp" />
+    </definition>
+    <definition name="/list.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/participantListMain.jsp" />
+    </definition>
+    <definition name="/adminHome.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/adminHome.jsp" />
+    </definition>
+    <definition name="/manageWorkshops.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/manageWorkshopsHead.html"/>
+        <put-attribute name="body" value="/adminPages/manageWorkshops.jsp" />
+    </definition>
+    <definition name="/manageAnnouncements.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/manageAnnouncementHead.html"/>
+        <put-attribute name="body" value="/adminPages/manageAnnouncements.jsp" />
+    </definition>
+    <definition name="/manageRCCapacity.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/manageRCCapacityHead.html"/>
+        <put-attribute name="body" value="/adminPages/manageRCCapacity.jsp" />
+    </definition>
+    <definition name="/workshopsIndex.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/workshopsIndex.jsp" />
+    </definition>
+    <definition name="/participantDetails.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/participantListHead.html"/>
+        <put-attribute name="body" value="/adminPages/participantDetails.jsp" />
+    </definition>
+    <definition name="/domanageAnnouncements.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/announcementSuccess.jsp"/>
+    </definition>
+    <definition name="/invalidtoken.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/invalidtoken.jsp" />
+    </definition>
+    <definition name="/updateRCCapacity.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/manageRCCapacityHead.html"/>
+        <put-attribute name="body" value="/adminPages/capacity.jsp"/>
+    </definition>
+    <definition name="/doUpdateRCCapacity.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/UpdateRCCSuccess.jsp"/>
+    </definition>
+    <definition name="/performUpdate.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/home.jsp"/>
+    </definition>
+    <definition name="/test.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/test.jsp" />
+    </definition>
+    <definition name="/confirmWInsertion.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/confirmWInsertion.jsp" />
+    </definition>
+    <definition name="/confirmWorkshopregistration.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/confirmWorkshopregistration.jsp" />
+    </definition>
+    <definition name="/viewParticipantDetails.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/viewParticipantDetails.jsp" />
+    </definition>
+    <definition name="/viewWorkshopsIndex.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/viewWorkshopsIndex.jsp" />
+    </definition> 
+    <definition name="/verifyLink.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/verifyEmailhead.html"/>
+        <put-attribute name="body" value="/pages/verifyLink.jsp" />
+    </definition>
+    <definition name="/verifyLinkSuccess.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/accessaccounthead.html"/>
+        <put-attribute name="body" value="/pages/verifyLinkSuccess.jsp" />
+    </definition>
+    <definition name="/updateParticipantDetails.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/updateParticipantDetails.jsp" />
+    </definition>
+    <definition name="profileupdatesuccessful.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/updateDetailsHead.html"/>
+        <put-attribute name="body" value="/adminPages/updateDetails.jsp" />
+    </definition>
+    <definition name="/existUserPasswordSuccess.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/passChangeSuccessHead.html"/>
+        <put-attribute name="body" value="/pages/existUserPasswordSuccess.jsp" />
+    </definition> 
+    <definition name="/createPassword.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/changePassHead.html"/>
+        <put-attribute name="body" value="/pages/createPassword.jsp" />
+    </definition> 
+    <definition name="/AakashParticipantList.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/AakashParticipantList.jsp" />
+    </definition> 
+    <definition name="/viewRCCapacity.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/viewRemoteCenterCapacity.jsp" />
+    </definition> 
+    <definition name="/alreadyRegistered.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/alreadyRegisteredForWorkshop.jsp" />
+    </definition> 
+    <definition name="/alreadyRegistered1.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/alreadyRegisteredForWorkshop1.jsp" />
+    </definition> 
+
+    <definition name="/rc_alreadyRegistered.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/rc_alreadyRegisteredForWorkshop.jsp" />
+    </definition> 
+    <definition name="/profile1.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/profilehead.html"/>
+        <put-attribute name="body" value="/pages/updateProfile.jsp?tmpl=uprl" />
+    </definition>
+    <!--    <definition name="/updatePermissionLetter.tiles" extends="layout">
+         <put-attribute name="head" value="/heads/updatePermissionLetterHead.html"/>
+        <put-attribute name="body" value="/pages/updatePermissionLetter.jsp" />
+    </definition>
+    <definition name="/updateLetter.tiles" extends="layout">
+         <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/updateLetterSuccess.jsp" /> 
+    </definition>-->
+    <definition name="/updateRegistration.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/updateRegistrationHead.html"/> 
+        <put-attribute name="body" value="/pages/updateRegistrationForWorkshop.jsp" />
+    </definition>
+    <definition name="/confirmUpdateWorkshopRegistration.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/confirmUpdateWorkshopRegistration.jsp" />
+    </definition>
+    <definition name="notregistered.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/notRegistered.jsp" />
+    </definition>
+    <definition name="/updateDetails.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/updateDetailsHead.html"/>
+        <put-attribute name="body" value="/adminPages/updateDetails.jsp" />
+    </definition>
+    <definition name="/profileupdatesuccessful_admin.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/profileupdatedSuccessfully_admin.jsp" />
+    </definition>   
+    <definition name="/videoDownloads.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/videoDownloads.jsp" />
+    </definition>  
+    <definition name="/addNewRCCapacity.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/manageRCCapacityHead.html"/>
+        <put-attribute name="body" value="/adminPages/addNewRCC.jsp"/>
+    </definition>
+    <definition name="/doAddNewRCCapacity.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/addNewRCCSuccess.jsp"/>
+    </definition> 
+    <definition name="/generateMoodleLink.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/generateMoodleLink.jsp"/>
+    </definition>  
+    <definition name="/viewRC.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/viewRC.jsp"/>
+    </definition>  
+    <definition name="/updateRC.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/updateRC.jsp"/>
+    </definition>      
+    <definition name="/updateRCSuccess.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/updateRCSuccess.jsp"/>
+    </definition> 
+    <definition name="/userTypeUpdate.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/userTypeUpdate.jsp"/>
+    </definition>  
+    <definition name="/viewInstitute.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/manageInstituteHead.html"/>
+        <put-attribute name="body" value="/adminPages/viewInstitute.jsp"/>
+    </definition>   
+    <definition name="/viewConfigTables.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/viewConfigTables.jsp"/>
+    </definition>    
+    <definition name="/updateConfigDetails.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/updateConfigDetails.jsp"/>
+    </definition>  
+    <definition name="/doUpdateConfig.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/doUpdateConfigSuccess.jsp"/>
+    </definition> 
+    <definition name="/viewCity.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/viewCity.jsp"/>
+    </definition>    
+    <definition name="/updateCity.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/updateCity.jsp"/>
+    </definition>  
+    <definition name="/doUpdateCity.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/doUpdateCitySuccess.jsp"/>
+    </definition> 
+    <definition name="/updateInstitute.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/manageInstituteHead.html"/>
+        <put-attribute name="body" value="/adminPages/updateInstitute.jsp"/>
+    </definition> 
+    <definition name="/updateInstituteSuccess.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/updateInstituteSucess.jsp"/>
+    </definition>
+    <definition name="/changePageContent.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/PageContentHead.html"/>
+        <put-attribute name="body" value="/adminPages/changePageContent.jsp"/>
+    </definition>  
+    <definition name="/changeMailContent.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/changeMailContent.jsp"/>
+    </definition> 
+    <definition name="/doChangeMailContent.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/changeMailContentSuccess.jsp"/>
+    </definition>
+    <definition name="/viewCompletedParticipants.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/viewCompletedParticipants.jsp"/>
+    </definition>
+    <definition name="/viewInstituteHeadDetails.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/manageInstituteHead.html"/>
+        <put-attribute name="body" value="/adminPages/viewInstituteHeadDetails.jsp"/>
+    </definition>
+    <definition name="/updateInstituteHeadDetails.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/manageInstituteHead.html"/>
+        <put-attribute name="body" value="/adminPages/updateHeadDetails.jsp"/>
+    </definition>
+    <definition name="/updateHeadDetailsSuccess.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/manageInstituteHead.html"/>
+        <put-attribute name="body" value="/pages/updateHeadDetailsSuccess.jsp"/>
+    </definition>
+    <definition name="/AddNewHeadDetails.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/manageInstituteHead.html"/>
+        <put-attribute name="body" value="/adminPages/addNewHeadDetails.jsp"/>
+    </definition>
+    <definition name="/addNewHeadDetailsSuccess.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/manageInstituteHead.html"/>
+        <put-attribute name="body" value="/pages/AddNewHeadDetailsSuccess.jsp"/>
+    </definition>
+    <definition name="/viewRCForCertificates.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/viewRCForCertificates.jsp"/>
+    </definition>
+    <definition name="/attendanceDetails.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/attendanceDetails.jsp" />
+    </definition>
+    <definition name="/createProgramAttendance.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/createProgramAttendance.jsp"/>
+    </definition>
+    <definition name="/doCreateProgramSchedule.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/createScheduleSuccess.jsp"/>
+    </definition>
+    
+    <definition name="/viewSummary.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/summaryHead.html"/>
+        <put-attribute name="body" value="/adminPages/viewSummary.jsp"/>
+    </definition> 
+    <!--<definition name="/viewSurvey.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/surveyhead.html"/>
+        <put-attribute name="body" value="/pages/survey.jsp"/>
+    </definition> 
+    <definition name="/surveysuccess.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/surveyhead.html"/>
+        <put-attribute name="body" value="/pages/surveysuccess.jsp"/>
+    </definition> 
+    <definition name="/viewSurveyDetails.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/summaryHead.html"/>
+        <put-attribute name="body" value="/adminPages/viewSurveyDetails.jsp"/>
+    </definition> -->
+    <definition name="/workshopSummary.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/summaryHead.html"/>
+        <put-attribute name="body" value="/adminPages/workshopParticipantSummary.jsp"/>
+    </definition>
+    <definition name="/survey.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/surveyhead.html"/>
+        <put-attribute name="body" value="/pages/survey.jsp"/>
+    </definition>
+    <definition name="/surveySuccess.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/surveyhead.html"/>
+        <put-attribute name="body" value="/pages/surveysuccess.jsp"/>
+    </definition>
+    <definition name="/sendSurvey.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/surveyhead.html"/>
+        <put-attribute name="body" value="/adminPages/sendSurvey.jsp"/>
+    </definition>
+    <definition name="/sendSurveySuccess.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/surveyhead.html"/>
+        <put-attribute name="body" value="/pages/sendSurveySuccess.jsp"/>
+    </definition>
+    <definition name="/rcwiseSummary.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/summaryHead.html"/>
+        <put-attribute name="body" value="/adminPages/rcwiseSummary.jsp"/>
+    </definition>  
+    
+    <!--<definition name="/viewSurveySummary.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/viewSurveySummary.jsp" />
+    </definition>-->
+
+    <definition name="/statewiseSummary.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/summaryHead.html"/>
+        <put-attribute name="body" value="/adminPages/stateWiseSummary.jsp"/>
+    </definition>
+    <definition name="/readexdata.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/readExcelData.jsp"/>
+    </definition>
+    <definition name="/readexdatasuccess.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/readExcelSuccess.jsp"/>
+    </definition> 
+    <definition name="/privateWorkshopRegistration.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/privateWorkshopRegistration.jsp"/>
+    </definition>
+    <definition name="/errorIdNotExist.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/errorIdNotExist.jsp"/>
+    </definition>
+    <definition name="/viewProgramSchedule.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/viewProgramSchedule.jsp"/>
+    </definition>
+    <definition name="/invitenotreg.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/invitebutnotregister.jsp"/>
+    </definition>
+    <definition name="/viewAttendanceDetails.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/viewAttendanceDetails.jsp"/>
+    </definition>
+    <definition name="/loginNotReg.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/viewLoginButNotRegister.jsp"/>
+    </definition>
+    <definition name="/viewAttendanceOfParticipants.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/viewAttendanceOfParticipants.jsp"/>
+    </definition>
+    <definition name="/manageParticipantsRCC.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/manageParticipantsRCC.jsp"/>
+    </definition>
+    <definition name="/programScheduleAdmin.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/programScheduleAdmin.jsp" />
+    </definition>  
+    <definition name="/instructions.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/instructions.jsp" />
+    </definition>  
+    <definition name="/displayRCCDetails.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/displayRCCDetails.jsp" />
+    </definition>
+    <definition name="/viewAttendanceWT.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/viewAttendanceWT.jsp"/>
+    </definition> 
+    <definition name="/onInviteFailure.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/onInviteFailure.jsp" />
+    </definition>
+    <definition name="/uploadAttendacebyWSC.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/uploadAttendacebyWSC.jsp" />
+    </definition>
+    <definition name="/douploadAttendacebyWSCSuccess.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/uploadAttendancebyWSCSuccess.jsp" />
+    </definition>
+    <definition name="/viewUploadedAttendance.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/viewUploadedAttendance.jsp" />
+    </definition>
+    <definition name="/cleanUpPersonTable.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/personNamesUpdate.jsp" />
+    </definition>
+    <definition name="/participantListRCC.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/participantListRCC.jsp" />
+    </definition>
+    <definition name="/viewAttendanceOfParticipantsRCC.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/viewAttendanceOfParticipantsRCC.jsp"/>
+    </definition>
+    <definition name="/faqAdmin.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/faqAdmin.jsp" />
+    </definition>
+    <definition name="/nominatedWSC.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/nominatedWSC.jsp" />
+    </definition>
+    <definition name="/nominateWSC.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/nominateWSC.jsp" />
+    </definition>
+    <definition name="/doNominate.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/nominateWSC.jsp"/>
+    </definition>
+    <definition name="/createAttendanceNewParticipant.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/createAttendanceNewParticipant.jsp" />
+    </definition>
+    <definition name="/unsubscribe.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/unsubscribe.jsp" />
+    </definition>
+    <definition name="/certificateAudit.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/certificateAudit.jsp" />
+    </definition>
+    <definition name="/viewUploadedAttendaceByWSC.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/viewUploadedAttendaceByWSC.jsp" />
+    </definition>
+    <definition name="/workshopAttended.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/workshopAttendedReport.jsp" />
+    </definition>
+    <definition name="/createScheduleByExcel.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/createScheduleByExcel.jsp" />
+    </definition>
+    <definition name="/createScheduleByExcelSuccess.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/createScheduleByExcelSuccess.jsp" />
+    </definition>
+    <definition name="/paymentSuccess.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/paymentSuccess.jsp" />
+    </definition>
+    <definition name="/paymentDetails.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/paymentDetailsForATeam.jsp" />
+    </definition>
+    <definition name="/showPaymentDetails.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/showPaymentDetails.jsp" />
+    </definition>
+    <definition name="/workshopremark.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/workshopremark.jsp" />
+    </definition>
+    <definition name="/displayPayIndex.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/displayPaymentDetails.jsp" />
+    </definition>
+    <definition name="/subscribe.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/subscribe.jsp" />
+    </definition> 
+    <definition name="/subscribeHere.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/subscribeHere.jsp" />
+    </definition>
+    <definition name="/showWorkshopsIndex.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/showWorkshopsIndex.jsp" />
+    </definition>
+    <definition name="/faculyOfInstituteReport.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/faculyOfInstituteReport.jsp" />
+    </definition>
+    <definition name="/participantListSW.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/participantListSW.jsp" />
+    </definition>
+    <definition name="/participantDetailsSW.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/participantListHead.html"/>
+        <put-attribute name="body" value="/adminPages/participantDetailsSW.jsp" />
+    </definition>
+    <definition name="/updateDetailsSW.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/updateDetailsHead.html"/>
+        <put-attribute name="body" value="/adminPages/updateDetailsSW.jsp" />
+    </definition>
+    <definition name="/profileupdatesuccessful_adminSW.tiles" extends="layout">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/pages/profileupdatedSuccessfully_admin.jsp" />
+    </definition>
+     <definition name="/viewInstitutesForCertificates.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/viewInstitutesForCertificates.jsp"/>
+    </definition>
+    <definition name="/viewCompletedParticipantsSW.tiles" extends="layoutAdmin">
+        <put-attribute name="head" value="/heads/common.html"/>
+        <put-attribute name="body" value="/adminPages/viewCompletedParticipantsSW.jsp"/>
+    </definition>
+</tiles-definitions>
+

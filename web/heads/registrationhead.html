@@ -1,0 +1,341 @@
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">       
+    <meta name="description" content="website description" />
+    <meta name="keywords" content="website keywords, website keywords" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>'Project Name' | Register Here</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" href="css/tipTip.css"/>
+    <link rel="stylesheet" href="css/css3-buttons.css"/>
+    <!-- modernizr enables HTML5 elements and feature detects -->
+    <script type="text/javascript" src="js/modernizr-1.5.min.js"></script> 
+    <script type="text/javascript"  src="js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easing-sooper.js"></script>
+    <script type="text/javascript" src="js/jquery.sooperfish.js"></script>
+    <script type="text/javascript" src="js/project_common.js"></script>
+    <script language="JavaScript" src="js/jquery.tipTip.minified.js"></script>
+    <script type="text/javascript" language="JavaScript" src="js/ajaxedit.js"></script>
+    <script type="text/javascript" src="js/ajaxcaptcha.js"></script>
+    <script type="text/javascript" src="js/ajaxscript.js"></script>
+    <script type="text/javascript" src="validation/validate.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".tipTip").tipTip({defaultPosition: "right"});
+        });
+        function funCE() {
+            var email = document.getElementById("email").value.toLowerCase().trim();
+            var cemail = document.getElementById("cemail").value.toLowerCase().trim();
+            if (email == cemail) {
+                document.getElementById("cerror").style.display = "none";
+                document.getElementById("cemail").style.border = '';
+            } else
+            {
+                document.getElementById("cemail").style.border = "1px solid red";
+                document.getElementById("cerror").style.display = 'inline';
+            }
+        }
+        function funPCE() {
+            var password = document.getElementById("password").value.toLowerCase();
+            var cpassword = document.getElementById("cpassword").value.toLowerCase();
+            if (password == cpassword) {
+                document.getElementById("cpassworderror").style.display = "none";
+                document.getElementById("cpassword").style.border = '';
+            } else
+            {
+                document.getElementById("cpassword").style.border = "1px solid red";
+                document.getElementById("cpassworderror").style.display = 'inline';
+            }
+        }
+
+        function onlyNumbers(evt)
+        {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+
+            return true;
+        }
+
+        function ValidateAlpha(evt)
+        {
+            var keyCode = (evt.which) ? evt.which : event.keyCode
+            if ((keyCode < 65 || keyCode > 90) && (keyCode < 97 || keyCode > 123) && keyCode != 32)
+                return false;
+
+            return true;
+        }
+
+        function changeHeadAddress() {
+            var headaddress = document.getElementById('instituteAddress').value;
+            if (!registrationForm.sameAsInstituteAddress.checked == true) {
+                document.getElementById('headAddress').value = "";
+            } else
+                document.getElementById('headAddress').value = headaddress;
+        }
+
+        function changeState() {
+            var stateID = document.getElementById('stateInstitute').value;
+            if (stateID != -1) {
+                fetchCity(stateID);
+            } else {
+                document.getElementById('stateInstitute').value = "-1";
+            }
+        }
+
+        function changeCity() {
+            var cityID = document.getElementById('cityInstitute').value;
+            if (cityID != -1) {
+                fetchInstitute(cityID);
+                resetInstituteDetails();
+            } else {
+                document.getElementById('cityInstitute').value = "-1";
+            }
+        }
+
+        function toggleField() {
+            var collegename = document.getElementById('institute').value;
+            var o = document.getElementById('other');
+            if (collegename == 'other') {
+                o.style.display = 'inline';
+                document.getElementById("other").value = "";
+                document.getElementById("instituteAddress").value = "";
+                document.getElementById("pincodeInstitute").value = "";
+                document.getElementById("instituteAddress").readOnly = false;
+                document.getElementById("pincodeInstitute").readOnly = false;
+                document.getElementById("headName").value = "";
+                document.getElementById("headEmail").value = "";
+                document.getElementById("headPhone").value = "";
+                document.getElementById("headAddress").value = "";
+                document.getElementById("headTitle").value = "-1";
+                document.getElementById("headDesignation").value = "-1";
+
+                document.getElementById("headName").readOnly = false;
+                document.getElementById("headEmail").readOnly = false;
+                document.getElementById("headPhone").readOnly = false;
+                document.getElementById("headAddress").readOnly = false;
+                document.getElementById("headTitle").disabled = false;
+                document.getElementById("headDesignation").disabled = false;
+
+            } else if (collegename == '-1') {
+                document.getElementById("instituteAddress").value = "";
+                document.getElementById("pincodeInstitute").value = "";
+                document.getElementById("instituteAddress").readOnly = false;
+                document.getElementById("pincodeInstitute").readOnly = false;
+            } else {
+                var streamId = document.getElementById("discipline").value;
+                if (streamId == -1) {
+                    alert("please select Discipline");
+                } else if (streamId != -1) {
+                    var isfaculty= document.getElementById("facultyStatus").value;
+                    if(isfaculty == 1){
+                       fetchInstituteHeadDetails(collegename, streamId);
+                    }
+                }
+                o.style.display = 'none';
+                fetchInstituteDetails(collegename);
+            }
+        }
+
+        function ChangeInstituteHead(streamid) {
+            var instituteid = document.getElementById("institute").value;
+            if (instituteid != '-1' && streamid != '-1') {
+                fetchInstituteHeadDetails(instituteid, streamid);
+            } else {
+            }
+        }
+
+        function setHtitleValue(val) {
+            document.getElementById("hidden_headtitle").value = val;
+        }
+
+        function setHdesginationValue(val) {
+            document.getElementById("hidden_headdesignation").value = val;
+        }
+
+        function changeState1() {
+            var stateID = document.getElementById('personState').value;
+            if (stateID != -1) {
+                personCity(stateID);
+                // fetchCity1(stateID);
+            } else {
+                document.getElementById('stateInstitute').value = "-1";
+            }
+        }
+
+        function changeCity1() {
+            var cityID = document.getElementById('personCity').value;
+            if (cityID == -2) {
+                document.getElementById("hiddenCityFlag").value = 1;
+                document.getElementById('otherPcity').style.display = "inline";
+            } else if (cityID != -2) {
+                document.getElementById("hiddenCityFlag").value = 0;
+                document.getElementById('otherPcity').style.display = "none";
+                document.getElementById('otherCityError').style.display = "none";
+                document.getElementById('otherCity').style.border = "";
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('ul.sf-menu').sooperfish();
+            $('.top').click(function() {
+                $('html, body').animate({scrollTop: 0}, 'fast');
+                return false;
+            });
+            $("#settingoptions").hide();
+            $("#showmore").click(function() {
+                $("#settingoptions").slideToggle();
+            });
+
+            $(document).bind('click', function(e) {
+                $("#settingoptions").hide();
+            });
+            changeState();
+            changeCity();
+        });
+    </script>
+    <script>
+        function showhints(){
+            var fn=document.getElementById("firstName").value.trim();
+            var ln=document.getElementById("lastName").value.trim();
+            if(fn !='' && ln !=''){
+                document.getElementById("showName").innerHTML='You have entered your name as "'+fn+' '+ln+'". Please double check, as this name will be printed in the certificate.';
+                document.getElementById("showName").style.display="inline";
+                //               alert('You have entered your name as "'+fn+' '+ln+'". Please double check as this is the name which will be printed in the certificate.');
+            }
+        }
+        
+        function convertValue(value,id){
+            if(value.trim() !=''){
+                convertFirstLetter(value, id);
+            }
+        }
+        
+        function convertFirstLetter(value,id) {
+            var data = "val=" + value+"&id="+id;
+            $.ajax({
+                url: "pages/DAO_FirstLetterUpperCase.jsp",
+                type: "GET",
+                data: data,
+                dataType: "json",
+                success: set_ConvertName,
+                error: onError
+            });
+        }
+
+        function set_ConvertName(data) {
+            var spl_data=data.split("$");
+            document.getElementById(spl_data[1]).value=spl_data[0];
+            if(spl_data[1] == 'lastName'){
+                showhints();
+            }
+        }
+
+        function onError(jqXHR, textStatus, errorThrown) {
+            alert("Error : " + textStatus + " " + errorThrown);
+        }
+    </script>
+    <script>
+        function showInstituteDetails(){
+            var facultycheck=document.getElementById("facultyStCheck").checked;
+            if(facultycheck == true){
+                document.getElementById("formDetails").style.display="inline";
+                document.getElementById("formInstitute").style.display="inline";
+                document.getElementById("formHeadOfInstitute").style.display="inline";
+                document.getElementById("facultyStatus").value="1";
+                document.getElementById("noteForFaculty").style.display="inline";
+                document.getElementById("noteForUser").style.display="none";
+            }else if(facultycheck == false){
+                document.getElementById("formDetails").style.display="none";
+                document.getElementById("formInstitute").style.display="none";
+                document.getElementById("formHeadOfInstitute").style.display="none";
+                document.getElementById("facultyStatus").value="0";
+                document.getElementById("noteForUser").style.display="inline";
+                document.getElementById("noteForFaculty").style.display="none";
+                // document.getElementById("facultyCertcheck").checked=false;
+            } 
+        }
+        
+        function showInstituteDetails11(){
+            //var facultycheck=document.getElementById("facultyStCheck").checked;
+            var facultycheckY = document.getElementById('facultyStCheckYes').checked;
+            var facultycheckN = document.getElementById('facultyStCheckNo').checked;
+            if(facultycheckY == true){
+                document.getElementById("formDetails").style.display="inline";
+                document.getElementById("formInstitute").style.display="inline";
+                document.getElementById("formHeadOfInstitute").style.display="inline";
+                document.getElementById("facultyStatus").value="1";
+                document.getElementById("noteForFaculty").style.display="inline";
+                document.getElementById("noteForUser").style.display="none";
+                document.getElementById("photoidheading").innerHTML="Institute Photo ID Card [only jpg/jpeg file,max 250 kb]<sup><img src='images/star.png'></sup>";
+                document.getElementById("instituteheader").innerHTML="Your Institute Details";
+                document.getElementById("instateheading").innerHTML="Select State of Institute<sup><img src='images/star.png'></sup>";
+                document.getElementById("incityheading").innerHTML="Select City of Institute<sup><img src='images/star.png'></sup>";
+                document.getElementById("instituteheading").innerHTML="Select your Institute<sup><img src='images/star.png'></sup>";
+            }else if(facultycheckN == true){
+                document.getElementById("formDetails").style.display="inline";
+                document.getElementById("formInstitute").style.display="inline";
+                document.getElementById("formHeadOfInstitute").style.display="none";
+                document.getElementById("facultyStatus").value="0";
+                document.getElementById("noteForUser").style.display="inline";
+                document.getElementById("noteForFaculty").style.display="none";
+                document.getElementById("photoidheading").innerHTML="Institute/Organization Photo ID Card [only jpg/jpeg file,max 250 kb]<sup><img src='images/star.png'></sup>";
+                document.getElementById("instituteheader").innerHTML="Your Institute/Organization Details";
+                document.getElementById("instateheading").innerHTML="Select State of Institute/Organization<sup><img src='images/star.png'></sup>";
+                document.getElementById("incityheading").innerHTML="Select City of Institute/Organization<sup><img src='images/star.png'></sup>";
+                document.getElementById("instituteheading").innerHTML="Select your Institute/Organization<sup><img src='images/star.png'></sup>";
+                // document.getElementById("facultyCertcheck").checked=false;
+                // set head details fields to empty
+                document.getElementById("headName").value = "";
+                document.getElementById("headEmail").value = "";
+                document.getElementById("headPhone").value = "";
+                document.getElementById("headAddress").value = "";
+                document.getElementById("headTitle").value = '-1';
+                document.getElementById("headDesignation").value = '-1';
+                // allow to edit
+                document.getElementById("headName").readOnly = false;
+                document.getElementById("headPhone").readOnly = false;
+                document.getElementById("headEmail").readOnly = false;
+                document.getElementById("headAddress").readOnly = false;
+                document.getElementById("headTitle").disabled = false;
+                document.getElementById("headDesignation").disabled = false;
+            } 
+        }
+        
+        function checkEmailExist(email){
+            if(email.trim().length > 0){
+                checkIfEmailExist(email);
+            }
+        }
+        
+        function checkIfEmailExist(email){
+            var data = "email=" + email;
+            $.ajax({
+                url: "pages/DAO_checkIfEmailExist.jsp",
+                type: "GET",
+                data: data,
+                dataType: "json",
+                success: set_checkIfEmailExist,
+                error: onError
+            }); 
+        }
+        
+        function set_checkIfEmailExist(data){
+            //alert(data)
+            if(data == 1){
+                //show msg to send link
+                document.getElementById("showEmailMsg").style.display="block";
+                //document.getElementById("submit").disabled = true;
+                //document.getElementById("reset").disabled = true;
+                document.getElementById("submit").style.display = "none";
+                document.getElementById("reset").style.display = "none";
+            }else{
+                document.getElementById("showEmailMsg").style.display="none";
+               // document.getElementById("submit").disabled = false;
+               // document.getElementById("reset").disabled = false;
+               document.getElementById("submit").style.display = "inline";
+               document.getElementById("reset").style.display = "inline";
+            }
+        }
+    </script>
+</head>

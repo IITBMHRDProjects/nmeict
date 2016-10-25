@@ -1,0 +1,89 @@
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">       
+    <meta name="description" content="website description" />
+    <meta name="keywords" content="website keywords, website keywords" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>'Project Name' | Workshop Registration</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" href="css/tipTip.css"/>
+    <link rel="stylesheet" href="css/css3-buttons.css"/>
+    <!-- modernizr enables HTML5 elements and feature detects -->
+    <script type="text/javascript" src="js/modernizr-1.5.min.js"></script>   
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery.easing-sooper.js"></script>
+    <script type="text/javascript" src="js/jquery.sooperfish.js"></script>
+    <script type="text/javascript" src="js/project_common.js"></script>
+    <script type="text/javascript" src="js/jquery.tipTip.minified.js"></script>
+    <script src="validation/validate.js"></script>
+    <script type="text/javascript" language="JavaScript" src="js/ajaxedit.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".tipTip").tipTip({defaultPosition: "right"});
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('ul.sf-menu').sooperfish();
+            $('.top').click(function() {
+                $('html, body').animate({scrollTop: 0}, 'fast');
+                return false;
+            });
+            $("#settingoptions").hide();
+            $("#showmore").click(function(e) {
+                var x=e.pageX;
+                var tmpx=x-200;
+                $("#settingoptions").css({left: tmpx});
+                $("#settingoptions").slideToggle();
+            });
+                
+            $(document).bind('click', function(e) {
+                $("#settingoptions").hide();
+            });
+        });
+    </script>  
+    <script type="text/javascript">
+        function changeState() {
+            var stateID = document.getElementById('state').value;
+            document.getElementById("stateID").value=stateID;          
+            var categorycode=document.getElementById('categorycode').value;
+            var workshopid=document.getElementById('workshopid').value;
+            
+            //reset already existing values
+            document.getElementById("acco1").checked=false;
+            document.getElementById("acco2").checked=false;
+            document.getElementById("acco2").disabled=false;
+            document.getElementById("acco1").disabled=false;
+            
+            if (stateID != -1) {     
+                fetchRC(workshopid,stateID);
+                document.getElementById("rcid").value="";
+            }else {                
+                resetWRForm_ExceptPermissionLetter();
+            }
+        }
+        function openRCCapacity(){
+            var state=document.getElementById('stateID').value;
+            var workshopid_enc=document.getElementById('workshopid_enc').value;
+            if(state == 0 || state == -1){
+                alert("Please Select a State");
+            }else{
+                window.open("viewRCCapacity.html?workshopid="+workshopid_enc+"&state="+state+"&callFrom=1");
+            }
+        }
+        function setRCID(){
+            var rcid=document.getElementById('remotecenter').value;
+            document.getElementById('rcid').value=rcid;
+            var workshopid=document.getElementById('workshopid').value;
+            var categorycode=document.getElementById('categorycode').value;
+            
+            //reset already existing values
+            document.getElementById("acco1").checked=false;
+            document.getElementById("acco2").checked=false;
+            document.getElementById("acco2").disabled=false;
+            document.getElementById("acco1").disabled=false;
+            
+            if(categorycode != 4){
+            fetchAccommodation(rcid,workshopid);}
+        }
+    </script>
+</head>

@@ -1,0 +1,187 @@
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">       
+    <meta name="description" content="website description" />
+    <meta name="keywords" content="website keywords, website keywords" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>'Project Name' | Update Participant Details</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" href="css/tipTip.css"/>
+    <link rel="stylesheet" href="css/css3-buttons.css"/>
+    <!-- modernizr enables HTML5 elements and feature detects -->
+    <script type="text/javascript" src="js/modernizr-1.5.min.js"></script>   
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery.easing-sooper.js"></script>
+    <script type="text/javascript" src="js/jquery.sooperfish.js"></script>
+    <script type="text/javascript" src="js/project_common.js"></script>
+    <script type="text/javascript" src="js/jquery.tipTip.minified.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".tipTip").tipTip({defaultPosition: "right"});
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('ul.sf-menu').sooperfish();
+            $('.top').click(function() {
+                $('html, body').animate({scrollTop: 0}, 'fast');
+                return false;
+            });
+            $("#settingoptions").hide();
+            $("#showmore").click(function(e) {
+                var x=e.pageX;
+                var tmpx=x-200;
+                $("#settingoptions").css({left: tmpx});
+                $("#settingoptions").slideToggle();
+            });
+                
+            $(document).bind('click', function(e) {
+                $("#settingoptions").hide();
+            });
+        });
+    </script>   
+
+    <script type="text/javascript" src="validation/validate.js"></script>
+    <script type="text/javascript" src="js/ajaxedit.js"></script>
+
+    <script type="text/javascript">
+        function changeState1() {
+            var stateID = document.getElementById('state').value;
+            document.getElementById("stateID").value=stateID;   
+            var categorycode=document.getElementById('categorycode').value;
+            var workshopid=document.getElementById('workshopid').value;            
+            //reset already existing values
+            document.getElementById("acco1").checked=false;
+            document.getElementById("acco2").checked=false;
+            document.getElementById("acco2").disabled=false;
+            document.getElementById("acco1").disabled=false;
+            
+            if (stateID != -1) {   
+                fetchRC(workshopid,stateID);
+                document.getElementById("rcid").value="";
+            }else {                
+                resetWRForm_ExceptPermissionLetter();
+            }
+        }
+        function setRCID(){
+            var rcid=document.getElementById('remotecenter').value;
+            document.getElementById('rcid').value=rcid;
+            var rcid_original=document.getElementById('rc_original').value;
+            var acco_original=document.getElementById('acco_original').value;
+            var workshopid=document.getElementById('workshopid').value;
+            var categorycode=document.getElementById('categorycode').value;
+            var acco_if_available=document.getElementById("acco_if_available").value;
+            
+            //reset already existing values
+            document.getElementById("acco1").checked=false;
+            document.getElementById("acco2").checked=false;
+            document.getElementById("acco2").disabled=false;
+            document.getElementById("acco1").disabled=false;
+            if(categorycode != 4 && (rcid_original != rcid)){
+                fetchAccommodation(rcid,workshopid);
+            }
+            if(categorycode != 4 && acco_if_available == 0 && rcid_original == rcid){
+                fetchAccommodation(rcid,workshopid);
+            }
+        }
+        function changeHeadAddress() {
+            var headaddress = document.getElementById('instituteAddress').value;
+            if (!registrationForm.sameAsInstituteAddress.checked == true) {
+                document.getElementById('headAddress').value = "";
+            } else
+                document.getElementById('headAddress').value = headaddress;
+        }
+        
+        // institute details
+        function changeState() {
+            var stateID = document.getElementById('stateInstitute').value;
+            if (stateID != -1) {
+                fetchCity(stateID);
+            } else {
+                document.getElementById('stateInstitute').value = "-1";
+            }
+        }
+
+        function changeCity() {
+            var cityID = document.getElementById('cityInstitute').value;
+            if (cityID != -1) {
+                fetchInstitute12(cityID);
+            } else {
+                document.getElementById('cityInstitute').value = "-1";
+            }
+        }
+
+        //        function toggleField() {
+        //            var collegename = document.getElementById('institute').value;
+        //            var o = document.getElementById('other');
+        //            if (collegename == 'other') {
+        //                o.style.display = 'inline';
+        //                document.getElementById("other").value="";
+        //                document.getElementById("instituteAddress").value="";
+        //                document.getElementById("pincodeInstitute").value="";
+        //                document.getElementById("instituteAddress").readOnly=false;
+        //                document.getElementById("pincodeInstitute").readOnly=false;
+        //                
+        //            } else if (collegename == '-1') {
+        //                document.getElementById("instituteAddress").value = "";
+        //                document.getElementById("pincodeInstitute").value = "";
+        //                document.getElementById("instituteAddress").readOnly=false;
+        //                document.getElementById("pincodeInstitute").readOnly=false;
+        //            } else {
+        //                o.style.display = 'none';
+        //                fetchInstituteDetails(collegename);
+        //            }
+        //        }
+        
+        function toggleField() {
+            var collegename =  document.getElementById('institute').value;
+            var o = document.getElementById('other');
+            if(collegename == 'other') {
+                o.style.display = 'inline';
+                // added by dipesh
+                document.getElementById("other").value="";
+                document.getElementById("instituteAddress").value="";
+                document.getElementById("pincodeInstitute").value="";
+                document.getElementById("instituteAddress").readOnly=false;
+                document.getElementById("pincodeInstitute").readOnly=false;
+                document.getElementById("headName").value="";
+                document.getElementById("headEmail").value="";
+                document.getElementById("headPhone").value="";
+                document.getElementById("headAddress").value="";
+                document.getElementById("headTitle").value="-1";
+                document.getElementById("headDesignation").value="-1";
+               
+                document.getElementById("headName").readOnly=false;
+                document.getElementById("headEmail").readOnly=false;
+                document.getElementById("headPhone").readOnly=false;
+                document.getElementById("headAddress").readOnly=false;
+                document.getElementById("headTitle").disabled=false;
+                document.getElementById("headDesignation").disabled=false;
+                
+            }else if(collegename == '-1'){
+                document.getElementById("instituteAddress").value="";
+                document.getElementById("pincodeInstitute").value="";
+                document.getElementById("instituteAddress").readOnly=false;
+                document.getElementById("pincodeInstitute").readOnly=false;
+            } else {
+                var streamId = document.getElementById("discipline").value;
+                if(streamId == -1){
+                    alert("please select Discipline");
+                }else if(streamId != -1){
+                    fetchInstituteHeadDetails(collegename,streamId);
+                }
+                o.style.display = 'none';
+                fetchInstituteDetails(collegename); 
+            }
+        }
+        function ChangeInstituteHead(streamid){
+            var instituteid=document.getElementById("institute").value;
+            if(instituteid != '-1' && streamid != '-1'){
+                fetchInstituteHeadDetails(instituteid,streamid);
+            }else{
+            }
+        }
+        function setHtitleValue(val){
+            document.getElementById("hidden_headtitle").value=val;
+        }
+    </script>
+</head>

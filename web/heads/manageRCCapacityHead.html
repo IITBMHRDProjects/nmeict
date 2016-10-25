@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">       
+    <meta name="description" content="website description" />
+    <meta name="keywords" content="website keywords, website keywords" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>'Project Name' | Manage Remote Center Capacity</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" href="css/tipTip.css"/>
+    <link rel="stylesheet" href="css/css3-buttons.css"/>
+    <!-- modernizr enables HTML5 elements and feature detects -->
+    <script type="text/javascript" src="js/modernizr-1.5.min.js"></script>   
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery.easing-sooper.js"></script>
+    <script type="text/javascript" src="js/jquery.sooperfish.js"></script>
+    <script type="text/javascript" src="js/project_common.js"></script>
+    <script language="JavaScript" src="js/jquery.tipTip.minified.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".tipTip").tipTip({defaultPosition: "right"});
+        });
+    </script>    
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('ul.sf-menu').sooperfish();
+            $('.top').click(function() {
+                $('html, body').animate({scrollTop: 0}, 'fast');
+                return false;
+            });
+            $("#settingoptions").hide();
+            $("#showmore").click(function(e) {
+                var x=e.pageX;
+                var tmpx=x-200;
+                $("#settingoptions").css({left: tmpx});
+                $("#settingoptions").slideToggle();
+            });
+
+            $(document).bind('click', function(e) {
+                $("#settingoptions").hide();
+            });
+        });
+    </script>
+    <script src="validation/validate.js"></script>
+    <script type="text/javascript" language="JavaScript" src="js/ajaxedit.js"></script>
+    <script type="text/javascript">
+        function loadDataTable(){
+            $(document).ready(function() {               
+                $('#participantDetail1').dataTable({                  
+                    // "scrollX": true,                
+                    "iDisplayLength": 25,
+                    "aLengthMenu": [[25, 50, 100, -1], [25, 50, 100, "All"]]
+                });
+            });
+        }
+    </script>
+
+    <script>
+        function ChangeWorkshopId(workshopid) {
+            var domcombo = document.getElementById("RCCData");
+            domcombo.innerHTML = "";
+
+            if (workshopid == '' || workshopid == null) {
+                domcombo.innerHTML = "";
+            } else if (workshopid == -1) {
+                // alert("please select workshop id");
+            } else {
+                //document.getElementById("loadMessage").style.display="inline";
+                // fetchRCCDetails(workshopid);
+               // getRccDetails(workshopid);
+                //window.open("manageRCCapacity1.html?workshopid=" + workshopid+"&state=0");
+                window.location.href="manageRCCapacity.html?workshopid=" + workshopid+"&state=0";
+            }
+        }
+
+        function onError(jqXHR, textStatus) {
+            alert("Error : " + textStatus);
+        }
+
+        function getXMLObject() { //XML Object
+            var xmlHttp = false;
+            try {
+                xmlHttp = new ActiveXObject("Msxml2.XMLHTTP") //For old Microsoft Browers
+            } catch (e) {
+                try {
+                    xmlHttp = new ActiveXObject("Microsoft.XMLHTTP") // For Microsoft IE 6.0+
+                } catch (e2) {
+                    xmlHttp = false; // No browser accepts the XMLHTTP Object then false
+                }
+            }
+            if (!xmlHttp && typeof XMLHttpRequest != 'undefined') {
+                xmlHttp = new XMLHttpRequest(); // For Mozilla, opera Browers
+            }
+            return xmlHttp; //Mandatory statement returning the ajax object created
+        }
+
+        var xmlhttp = new getXMLObject();
+
+        function getRccDetails(workshopid) {
+            var url = "DAORCCDetails.html?workshopid=" + workshopid + "&state=" + 0;
+            xmlhttp.onreadystatechange = function()
+            {
+                if (xmlhttp.readyState == 4)
+                {
+                    if (xmlhttp.status == 200)
+                    {
+                        document.getElementById("RCCData").innerHTML = xmlhttp.responseText.trim();
+                        document.getElementById("loadMessage").style.display="none";                       
+                        loadDataTable();                      
+                    }
+                }
+            }
+            xmlhttp.open("GET", url, true);
+            xmlhttp.send();
+            // datatable call ..          
+        }
+
+        function fetchRCCDetails(workshopid) {
+            var data = "workshopid=" + workshopid;
+            $.ajax({
+                url: "pages/DAOSetRCC.jsp",
+                type: "GET",
+                data: data,
+                dataType: "json",
+                success: setRCCDetails,
+                error: onError
+            });
+            alert(workshopid);
+        }
+
+        function setRCCDetails(data) {
+            var dataTbl = $('#RCCData').dataTable();
+            dataTbl.fnClearTable();
+            var j = 0;
+            for (var i = 0; i < data.length; i++) {
+                j++;
+                dataTbl.fnAddData([
+                    j,
+                    data[i].rcid,
+                    data[i].remotecentername,
+                    data[i].available_seats,
+                    data[i].available_accomo
+                ]);
+            }
+
+        }
+
+
+
+        function isNumberKey1(evt)
+        {
+
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+
+            return true;
+        }
+
+        //functions added by Abinaya
+        // sends mail to the remote center coordinator for filling rc capacity
+        function sendMailToRCC(workshopid) {
+            sendMailToRcc(workshopid);
+        }
+        //                function openRCUpdate(workshopid,rcid,seats,acco){
+        function openRCUpdate(workshopid, rcid, seats, acco, acco_cost, food_cost) {
+            window.open("updateRCCapacity.html?workshopid=" + workshopid + "&rcid=" + rcid + "&avseats=" + seats + "&avaccomo=" + acco+"&acco_cost="+acco_cost+"&food_cost="+food_cost);
+        }
+
+        function deleteRCCapacity(workshopid, rcid, ava_seats, ava_accomo, userid) {
+            var r = confirm("Are you Sure you want to delete");
+            if (r == true) {
+                getDeleteRccapacity(workshopid, rcid, ava_seats, ava_accomo, userid);
+            } else {
+            }
+        }
+
+        function getDeleteRccapacity(workshopid, rcid, ava_seats, ava_accomo, userid) {
+            var url = "pages/DAODeleteRCC.jsp?workshopid=" + workshopid + "&rcid=" + rcid + "&ava_seats=" + ava_seats + "&ava_accomo=" + ava_accomo + "&userId=" + userid + "&state=" + 0;
+            xmlhttp.onreadystatechange = function()
+            {
+                if (xmlhttp.readyState == 4)
+                {
+                    if (xmlhttp.status == 200)
+                    {
+                        var resptxt = xmlhttp.responseText.trim();
+                        if (resptxt == 'true') {
+                            alert("data deleted successfully..")
+                        }else if(resptxt == 'exist'){
+                            alert("delete failed... participant exist")
+                        } else {
+                            alert("delete failed..")
+                        }
+                        // document.getElementById("RCCData").innerHTML = xmlhttp.responseText.trim();
+                    }
+                }
+            }
+            xmlhttp.open("GET", url, true);
+            xmlhttp.send();
+        }
+        
+        function addNewRcc(workshopid){
+            window.open("addNewRCCapacity.html?workshopid=" + workshopid); 
+        }
+        
+        function autoEnrollCoordinators(workshopid){
+            window.open("path/moodle/moodle_auto_coordinator_enrollment.php?workshopid="+workshopid);
+        }
+        function viewSeats(workshopid){
+            window.open("viewRCCapacity.html?workshopid="+workshopid+"&state=0&callFrom=2");
+        }
+        
+        function removeLoadMessage(){
+            alert("called");
+        }
+        //
+    </script>

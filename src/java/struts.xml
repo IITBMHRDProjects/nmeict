@@ -1,0 +1,868 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <!-- Configuration of default constant -->
+    <constant name="struts.action.extension" value="html"/> 
+    <!-- Configuration of default folder constant exceptions-->
+    <constant name="struts.action.excludePattern" value="/test_folder/.*"/>
+    <constant name="struts.action.excludePattern" value="/eVideos/.*"/>
+    <!-- message resources setting -->
+    <constant name="struts.devMode" value="false" />
+    <constant name="struts.custom.i18n.resources" value="ApplicationResources" />
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+        
+    
+    <!-- Configuration for the default package. -->
+    <package name="default" namespace="/" extends="struts-default">
+       
+         
+ <!--<package name="myPackage1" extends="ssl-default" namespace="/secured">-->
+            <!-- result types start -->
+        <result-types>
+            <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult" />
+        </result-types>
+            <!-- result types end -->
+        
+<!--        <default-action-ref name="home" />-->
+<!--        
+            <interceptors>
+                <interceptor class="org.project.interceptor.IndexAction" name="sslInterceptor"/>
+           
+            <interceptor-stack name="secureStack">
+                <interceptor-ref name="secure">
+                    <param name="useAnnotations">false</param>
+                </interceptor-ref>
+                <interceptor-ref name="sslInterceptor"/>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>-->
+        <!-- Interceptor declaration start -->
+        <interceptors>
+            <interceptor class="org.project.interceptor.LoginInterceptor" name="loginInterceptor" />
+            <interceptor class="org.project.interceptor.RoleInterceptor" name="loggerInterceptor" />
+            <interceptor-stack name="loginStack">
+                <interceptor-ref name="loginInterceptor" />
+                <interceptor-ref name="loggerInterceptor" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+            <interceptor-stack name="loggerStack">
+                <interceptor-ref name="loggerInterceptor" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+        </interceptors>
+        <!-- Interceptor declaration end -->
+           
+        <!-- global result start -->
+        <global-results>
+            <result name="login" type="tiles">/login.tiles</result>
+            <result name="login-success" type="tiles">/home.tiles</result>
+        </global-results>
+        <!-- global result end -->
+            
+        <action name="home" class="org.project.action.HomeAction">   
+            <!--<interceptor-ref name="secureStack"/>-->
+            <interceptor-ref name="loggerStack"/>
+            <result type="tiles">/home.tiles</result>  
+        </action>  
+        
+        <action name="login">
+            <interceptor-ref name="loggerStack"/>
+            <result name="success" type="tiles">/login.tiles</result>
+        </action>
+        
+        
+        <action name="dologin" class="org.project.action.LoginAction" method="login">
+            <interceptor-ref name="loggerStack"/>
+            <result name="success" type="redirectAction">home</result>
+            <result name="adminsuccess" type="redirectAction">home</result>
+            <result name="input" type="tiles">/login.tiles</result>
+            <result name="error" type="tiles">/login.tiles</result>
+        </action> 
+        
+        <action name="logout" class="org.project.action.LogoutAction" method="logout">
+            <interceptor-ref name="loggerStack"/>
+            <result name="success" type="redirectAction">home</result>
+        </action>
+                
+        <action name="signup" class="org.project.action.SignUpAction">
+            <interceptor-ref name="loggerStack" />
+            <result name="success" type="tiles">/signup.tiles</result>
+        </action>
+            
+        <action name="doregister" class="org.project.action.RegisterAction" method="register">
+            <interceptor-ref name="loggerStack" />
+            <result name="success" type="tiles">/confirm.tiles</result>
+            <result name="input" type="tiles">/signup.tiles</result>
+            <result name="error" type="tiles">/signup.tiles</result>
+        </action>
+        
+        <action name="validateEmail" class="org.project.action.ValidateEmail" method="validateEmail">
+            <interceptor-ref name="loggerStack" />
+            <result name="success" type="tiles">/thankyou.tiles</result>
+            <result name="error" type="tiles">/invalid.tiles</result>
+        </action>
+            
+        <action name="changePass" class="">
+            <interceptor-ref name="loginStack"/>
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="success" type="tiles">/changePass.tiles</result>
+        </action>
+            
+        <action name="doChangePass" class="org.project.action.ChangePassAction" method="checkPass">
+            <interceptor-ref name="loginStack"/>
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="success" type="tiles">/passChangeSuccess.tiles</result>
+            <result name="input" type="tiles">/changePass.tiles</result>
+            <result name="error" type="tiles">/changePass.tiles</result>
+        </action>
+        
+        <action name="updateProfile" class="org.project.action.UpdateProfileAction">
+            <interceptor-ref name="loginStack"/>
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="success" type="tiles">/profile.tiles</result>
+        </action>
+        
+        <action name="doupdateProfile" class="org.project.action.UpdateAction" method="updateProfile">
+            <interceptor-ref name="loginStack"/>
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="success" type="tiles">/profileupdatesuccessful.tiles</result>
+            <result name="input" type="tiles">/profile.tiles</result>
+            <result name="error" type="tiles">/profile.tiles</result>
+        </action>
+        
+        <action name="tempPassword" class="">
+            <interceptor-ref name="loggerStack"/>
+            <result name="success" type="tiles">/tempPassword.tiles</result>
+        </action>
+        
+        <action name="doTempPassword" class="org.project.action.TempPasswordAction" method="updatePass">
+            <interceptor-ref name="loggerStack"/>
+            <result name="success" type="tiles">/passChangeSuccess.tiles</result>
+            <result name="input" type="tiles">/tempPassword.tiles</result>
+            <result name="error" type="tiles">/invalid.tiles</result>
+        </action>
+        
+        <action name="accessaccount" class="">
+            <interceptor-ref name="loggerStack"/>
+            <result name="success" type="tiles">/accessaccount.tiles</result>
+        </action>
+        
+        <action name="doaccessaccount" class="org.project.action.AccessAccount" method="checkEmail">
+            <interceptor-ref name="loggerStack"/>
+            <result name="success" type="tiles">/accessaccountSuccess.tiles</result>
+            <result name="input" type="tiles">/accessaccount.tiles</result>
+            <result name="error" type="tiles">/accessaccount.tiles</result>
+        </action>
+        
+        <action name="contactus" class="">
+            <interceptor-ref name="loggerStack"/>
+            <result name="success" type="tiles">/contactus.tiles</result>
+        </action>
+        
+        <action name="docontactus" class="org.project.action.ContactUsAction" method="message">
+            <interceptor-ref name="loggerStack"/>
+            <result name="success" type="tiles">/contactusSuccess.tiles</result>
+            <result name="input" type="tiles">/contactus.tiles</result>
+            <result name="error" type="tiles">/contactus.tiles</result>
+        </action>
+        
+        <action name="team" class="">
+            <interceptor-ref name="loggerStack"/>
+            <result name="success" type="tiles">/team.tiles</result>
+        </action>
+        
+        <action name="faq" class="">
+            <interceptor-ref name="loggerStack"/>
+            <result name="success" type="tiles">/faq.tiles</result>
+        </action>
+        
+        <action name="About_Us" class="">
+            <interceptor-ref name="loggerStack"/>
+            <result name="success" type="tiles">/About_Us.tiles</result>
+        </action>
+        
+        <action name="gallery" class="">
+            <interceptor-ref name="loggerStack"/>
+            <result name="success" type="tiles">/gallery.tiles</result>
+        </action>
+        
+        <action name="downloads" class="">
+            <interceptor-ref name="loggerStack"/>
+            <result name="success" type="tiles">/downloads.tiles</result>
+        </action>
+            
+        <action name="workshopRegistration" class="org.project.action.WorkshopRegistrationAction">
+            <interceptor-ref name="loginStack"/>
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/workshopRegistration.tiles</result>           
+        </action>   
+        
+        <action name="participantList" class="org.project.action.ParticipantListAction">
+            <interceptor-ref name="loggerStack" />           
+            <result type="tiles">/participantList.tiles</result>           
+        </action>   
+            
+        <action name="announcements" class="org.project.action.AnnouncementsAction">
+            <interceptor-ref name="loggerStack" />           
+            <result type="tiles">/announcements.tiles</result>           
+        </action>   
+              
+        <action name="workshopContent" class="org.project.action.WorkshopContentAction">
+            <interceptor-ref name="loggerStack" />           
+            <result type="tiles">/workshopContent.tiles</result>           
+        </action>  
+        <action name="workshopsConducted" class="org.project.action.WorkshopsConductedAction">
+            <interceptor-ref name="loggerStack" />           
+            <result type="tiles">/workshopsConducted.tiles</result>           
+        </action> 
+        <action name="coordinatorList" class="org.project.action.CoordinatorListAction">
+            <interceptor-ref name="loggerStack" />           
+            <result type="tiles">/coordinatorList.tiles</result>           
+        </action> 
+        <action name="workshopDetails" class="org.project.action.WorkshopDetailsAction">
+            <interceptor-ref name="loggerStack" />           
+            <result type="tiles">/workshopDetails.tiles</result>           
+        </action> 
+        <action name="list" class="org.project.action.ParticipantListMainAction">
+            <interceptor-ref name="loggerStack" />           
+            <result type="tiles">/list.tiles</result>           
+        </action> 
+        <action name="adminHome" class="org.project.action.HomeAction">
+            <interceptor-ref name="loggerStack" />           
+            <result type="tiles">/home.tiles</result>           
+        </action>
+        <action name="manageWorkshops" class="org.project.action.ManageWorkshop">
+            <interceptor-ref name="loggerStack" />           
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/manageWorkshops.tiles</result>           
+        </action> 
+        <action name="manageAnnouncements" class="org.project.action.ManageAnnouncementAction">
+            <interceptor-ref name="loggerStack" />
+            <result name="login_failure" type="tiles">/login.tiles</result>  
+            <result type="tiles">/manageAnnouncements.tiles</result>           
+        </action> 
+        <action name="manageRCCapacity" class="org.project.action.manageRCCapacityAction">
+            <interceptor-ref name="loggerStack" />           
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/manageRCCapacity.tiles</result>           
+        </action> 
+        <action name="workshopsIndex" class="org.project.action.WorkshopsConductedAction">
+            <interceptor-ref name="loggerStack" />           
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/workshopsIndex.tiles</result>           
+        </action>
+        <action name="participantDetails" class="org.project.action.ParticipantListAction">
+            <interceptor-ref name="loggerStack" />           
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/participantDetails.tiles</result>           
+        </action>
+        
+        <action name="doManageWorkshop" class="org.project.action.ManageWorkshopAction" method="manageWorkshop">
+            <interceptor-ref name="loginStack" />
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="success" type="tiles">/confirmWInsertion.tiles</result>
+            <result name="input" type="tiles">/manageWorkshops.tiles</result>
+            <result name="error" type="tiles">/manageWorkshops.tiles</result>
+        </action>
+
+        <action name="DAORCCDetails" class="org.project.action.RCCDetailsAction">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="success">/pages/DAORCCDetails.jsp</result>
+        </action>
+        <action name="updateRCCapacity" class="org.project.action.UpdateRCCAction" method="getRCC">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/updateRCCapacity.tiles</result>
+        </action>
+        <action name="doUpdateRCCapacity" class="org.project.action.UpdateRCCAction">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/doUpdateRCCapacity.tiles</result>
+        </action>
+        <action name="announcementdata">
+            <result>pages/DAOSetAnnouncement.jsp</result>
+        </action>
+        <action name="domanageAnnouncements" class="org.project.action.UpdateAnnouncementAction">
+            <result name="success" type="tiles">/domanageAnnouncements.tiles</result>
+            <result name="input" type="tiles">/manageAnnouncements.tiles</result>
+        </action>
+        <action name="doRegisterForWorkshop" class="org.project.action.RegisterForWorkshopAction" method="registerParticipant">
+            <interceptor-ref name="loginStack" />
+            <result name="success" type="tiles">/confirmWorkshopregistration.tiles</result>
+            <result name="input" type="tiles">/workshopRegistration.tiles</result>
+            <result name="error" type="tiles">/workshopRegistration.tiles</result>
+            <result name="already_registered" type="tiles">/alreadyRegistered.tiles</result>
+            <result name="rc_already_registered" type="tiles">/rc_alreadyRegistered.tiles</result>
+        </action>
+        
+        <action name="viewWorkshopsIndex" class="org.project.action.WorkshopsConductedAction">
+            <interceptor-ref name="loggerStack" />           
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/viewWorkshopsIndex.tiles</result>           
+        </action>
+        <action name="viewParticipantDetails" class="org.project.action.ParticipantListAction">
+            <interceptor-ref name="loggerStack" />           
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/viewParticipantDetails.tiles</result>           
+        </action>
+        <action name="verifyLink" class="">
+            <interceptor-ref name="loggerStack"/>
+            <result name="success" type="tiles">/verifyLink.tiles</result>
+        </action>
+        <action name="doVerifyLink" class="org.project.action.VerifyLinkAction">
+            <interceptor-ref name="loggerStack"/>
+            <result name="success" type="tiles">/verifyLinkSuccess.tiles</result>
+            <result name="input" type="tiles">/verifyLink.tiles</result>
+            <result name="error" type="tiles">/verifyLink.tiles</result>
+        </action>
+        <action name="updateParticipantDetails" class="org.project.action.ParticipantListAction">
+            <interceptor-ref name="loggerStack" />           
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/updateParticipantDetails.tiles</result>           
+        </action>
+        <action name="updateDetails" class="org.project.action.UpdateParticipantDetailsAction">
+            <interceptor-ref name="loggerStack" />           
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/updateDetails.tiles</result>           
+        </action>
+        <action name="doSetPassword" class="org.project.action.SetPasswordForExistUser">
+            <interceptor-ref name="loggerStack"/>
+            <result name="success" type="tiles">/existUserPasswordSuccess.tiles</result>
+            <result name="input" type="tiles">/accessaccount1.tiles</result>
+            <result name="error" type="tiles">/accessaccount1.tiles</result>
+        </action> 
+        <action name="createPassword" class="">
+            <interceptor-ref name="loggerStack" />           
+            <result type="tiles">/createPassword.tiles</result>           
+        </action>
+        <action name="doCreatePassword" class="org.project.action.CreatePasswordAction">
+            <interceptor-ref name="loggerStack"/>
+            <result name="success" type="tiles">/profile1.tiles</result>
+            <result name="input" type="tiles">/createPassword.tiles</result>
+            <result name="error" type="tiles">/invalid.tiles</result>
+            <result name="UserExist" type="tiles">/existUserPasswordSuccess.tiles</result>
+        </action> 
+        <action name="AakashParticipantList" class="">
+            <interceptor-ref name="loggerStack"/>
+            <result name="success" type="tiles">/AakashParticipantList.tiles</result>
+        </action>
+        <action name="viewRCCapacity" class="org.project.action.RCCDetailsAction">
+            <interceptor-ref name="loggerStack" /> 
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/viewRCCapacity.tiles</result>           
+        </action> 
+        <action name="doupdateProfile1" class="org.project.action.UpdateAction" method="updateProfile">
+            <result name="success" type="tiles">/profileupdatesuccessful.tiles</result>
+            <result name="input" type="tiles">/profile1.tiles</result>
+            <result name="error" type="tiles">/profile1.tiles</result>
+        </action>
+        <!--         <action name="updatePermissionLetter" class="org.project.action.updatePermissionLetterAction">
+            <interceptor-ref name="loginStack"/>
+            <result name="login_failure" type="tiles">/login.tiles</result>            
+             <result type="tiles">/updatePermissionLetter.tiles</result>           
+        </action>
+        <action name="updateLetter" class="org.project.action.UpdateLetterAction">
+            <interceptor-ref name="loginStack"/>
+             <result name="login_failure" type="tiles">/login.tiles</result>           
+             <result name="success" type="tiles">/updateLetter.tiles</result>            
+        </action>-->
+        <action name="updateRegistration" class="org.project.action.UpdateRegistrationAction">
+            <interceptor-ref name="loginStack"/>
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="already_registered" type="tiles">/alreadyRegistered.tiles</result>
+            <result name="not_registered" type="tiles">notregistered.tiles</result>
+            <result name="success" type="tiles">/updateRegistration.tiles</result>           
+        </action>
+        <action name="doUpdateWorkshopRegistraion" class="org.project.action.UpdateWorkshopRegistration" method="updateParticipant">
+            <interceptor-ref name="loginStack" />
+            <result name="success" type="tiles">/confirmUpdateWorkshopRegistration.tiles</result>
+            <result name="input" type="tiles">/updateRegistration.tiles</result>
+            <result name="error" type="tiles">/updateRegistration.tiles</result>
+            <result name="already_registered" type="tiles">/alreadyRegistered.tiles</result>
+            <result name="rc_already_registered" type="tiles">/rc_alreadyRegistered.tiles</result>
+        </action>
+        <action name="doupdateParticipantDetails" class="org.project.action.ParticipantDetailsUpdateAction" method="updateParticipantDetails">
+            <interceptor-ref name="loginStack"/>
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="success" type="tiles">/profileupdatesuccessful_admin.tiles</result>
+            <result name="input" type="tiles">/profile.tiles</result>
+            <result name="error" type="tiles">/profile.tiles</result>
+        </action>
+        <action name="videoDownloads" class="org.project.action.DownloadsAction">
+            <interceptor-ref name="loggerStack" />           
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/videoDownloads.tiles</result>           
+        </action> 
+        <action name="addNewRCCapacity" class="org.project.action.AddNewRCCapacityAction" method="getWorkshop">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/addNewRCCapacity.tiles</result>
+        </action>
+        <action name="doAddNewRCCapacity" class="org.project.action.AddNewRCCapacityAction">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/doAddNewRCCapacity.tiles</result>
+        </action>
+        <action name="generateMoodleLink" class="org.project.utilities.ParticipantStatusChange_IITBx">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/generateMoodleLink.tiles</result>
+        </action>
+        <action name="viewRC" class="org.project.action.ViewRemoteCenterAction">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/viewRC.tiles</result>
+        </action>
+        <action name="updateRC" class="org.project.action.ViewRemoteCenterAction">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/updateRC.tiles</result>
+        </action>
+        <action name="doUpdateRC" class="org.project.action.UpdateRemoteCenterAction">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="error" type="tiles">/updateRCSuccess.tiles</result>
+            <result type="tiles">/updateRCSuccess.tiles</result>
+        </action>   
+        <action name="userTypeUpdate" class="org.project.action.ConfigUpdateAction" method="getRoles">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="error" type="tiles">/userTypeUpdate.tiles</result>
+            <result type="tiles">/userTypeUpdate.tiles</result>
+        </action>       
+        <action name="douserTypeUpdate" class="org.project.action.ConfigUpdateAction" method="updateUserRole">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="error" type="tiles">/userTypeUpdate.tiles</result>
+            <result type="tiles">/home.tiles</result>
+        </action>  
+        <action name="viewConfigTables" class="org.project.action.ConfigUpdateAction" method="viewConfigTableData">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="error" type="tiles">/viewConfigTables.tiles</result>
+            <result type="tiles">/viewConfigTables.tiles</result>
+        </action>         
+        <action name="updateConfigDetails" class="org.project.action.ConfigUpdateAction" method="viewParticularConfigDetail">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="error" type="tiles">/updateConfigDetails.tiles</result>
+            <result type="tiles">/updateConfigDetails.tiles</result>
+        </action>
+        <action name="doUpdateConfig" class="org.project.action.ConfigUpdateAction" method="updateConfigTable">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="error" type="tiles">/updateConfigDetails.tiles</result>
+            <result type="tiles">/doUpdateConfig.tiles</result>
+        </action>
+        <action name="viewInstitute">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/viewInstitute.tiles</result>
+        </action>
+        <action name="viewCity" class="org.project.action.ConfigUpdateAction" method="viewCity">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="error" type="tiles">/viewCity.tiles</result>
+            <result type="tiles">/viewCity.tiles</result>
+        </action>         
+        <action name="updateCity" class="org.project.action.ConfigUpdateAction" method="viewParticularCityDetail">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="error" type="tiles">/updateCity.tiles</result>
+            <result type="tiles">/updateCity.tiles</result>
+        </action>
+        <action name="doUpdateCity" class="org.project.action.ConfigUpdateAction" method="updateCityTable">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="error" type="tiles">/doUpdateCity.tiles</result>
+            <result type="tiles">/doUpdateCity.tiles</result>
+        </action>
+        <action name="updateInstitute" class="org.project.action.ManageInstituteAction">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/updateInstitute.tiles</result>
+        </action>
+        <action name="doupdateInstitute" class="org.project.action.UpdateInstituteAction" method="updateInstitue">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="success" type="tiles">/updateInstituteSuccess.tiles</result>
+            <result name="input" type="tiles">/updateInstitute.tiles</result>
+        </action>
+        <action name="changePageContent" class="org.project.action.PageContentAction">
+            <interceptor-ref name="loggerStack" /> 
+            <result type="tiles">/changePageContent.tiles</result>           
+        </action>
+        <action name="changeMailContent" class="">
+            <interceptor-ref name="loggerStack" /> 
+            <result type="tiles">/changeMailContent.tiles</result>           
+        </action> 
+        <action name="doChangeMailContent" class="org.project.action.UpdateMailContentAction" method="updateMailContent">
+            <interceptor-ref name="loggerStack" /> 
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="success" type="tiles">/doChangeMailContent.tiles</result>
+            <result name="input" type="tiles">/changeMailContent.tiles</result>
+            <result name="error" type="tiles">/changeMailContent.tiles</result>           
+        </action>
+        <action name="ForgotPassword_mail">
+            <result>/mail-template/ForgotPassword_mail.html</result>         
+        </action>
+        <action name="cancelled">
+            <result>/mail-template/cancelled.html</result>         
+        </action> 
+        <action name="emailconfirm">
+            <result>/mail-template/emailconfirm_mail.html</result>         
+        </action> 
+        <action name="passwordChange_Mail">
+            <result>/mail-template/passwordChange_Mail.html</result>         
+        </action> 
+        <action name="query_mail">
+            <result>/mail-template/query_mail.html</result>         
+        </action> 
+        <action name="queryinitiated_mail">
+            <result>/mail-template/queryinitiated_mail.html</result>         
+        </action>
+        <action name="registration_invalid">
+            <result>/mail-template/registration_invalid.html</result>         
+        </action>
+        <action name="remotecenter_capacity">
+            <result>/mail-template/remotecenter_capacity.html</result>         
+        </action> 
+        <action name="request_approved">
+            <result>/mail-template/request_approved.html</result>         
+        </action> 
+        <action name="signup_mail">
+            <result>/mail-template/signup_mail.html</result>         
+        </action> 
+        <action name="tempPasswordForExistUser">
+            <result>/mail-template/tempPasswordForExistUser.html</result>         
+        </action> 
+        <action name="update_participant_byadmin">
+            <result>/mail-template/update_participant_byadmin.html</result>         
+        </action> 
+        <action name="update_registration_success">
+            <result>/mail-template/update_registration_success.html</result>         
+        </action> 
+        <action name="welcome_mail">
+            <result>/mail-template/welcome_mail.html</result>         
+        </action>
+        <action name="viewCompletedParticipants" class="org.project.action.ParticipantListAction" method="getConfirmedParticipants">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/viewCompletedParticipants.tiles</result>
+        </action>
+        <!--<action name="dispatch_slip">
+            <result>/mail-template/dispatch_slip.html</result>         
+        </action>-->
+        <action name="viewInstituteHeadDetails" class="org.project.action.viewInstituteHeadDetailsAction">
+            <interceptor-ref name="loggerStack" />
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/viewInstituteHeadDetails.tiles</result>
+        </action>
+        <action name="updateInstituteHeadDetails" class="org.project.action.viewHeadDetailsAction">
+            <interceptor-ref name="loggerStack" />
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/updateInstituteHeadDetails.tiles</result>
+        </action>
+        <action name="doupdateHeadDetails" class="org.project.action.updateHeadDetailsAction">
+            <interceptor-ref name="loggerStack" />
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="success" type="tiles">/updateHeadDetailsSuccess.tiles</result>
+            <result name="input" type="tiles">/updateInstituteHeadDetails.tiles</result>
+            <result name="error" type="tiles">/updateInstituteHeadDetails.tiles</result>
+        </action>
+        <action name="addNewHeadDetails" class="org.project.action.addNewHeadDetailsAction">
+            <interceptor-ref name="loggerStack" />
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/AddNewHeadDetails.tiles</result>
+        </action>
+        <action name="doAddNewHeadDetails" class="org.project.action.insertNewHeadDetailsAction">
+            <interceptor-ref name="loggerStack" />
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="success" type="tiles">/addNewHeadDetailsSuccess.tiles</result>
+            <result name="input" type="tiles">/AddNewHeadDetails.tiles</result>
+            <result name="error" type="tiles">/AddNewHeadDetails.tiles</result>
+        </action>
+        <action name="viewRCForCertificates" class="org.project.action.ParticipantListAction" method="getConfirmedParticipants">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/viewRCForCertificates.tiles</result>
+        </action>
+         <action name="attendanceDetails" class="org.project.action.AttendanceDetailsAction">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/attendanceDetails.tiles</result>
+        </action>
+        <action name="createProgramAttendance" class="org.project.action.CreateProgramAttendanceAction">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/createProgramAttendance.tiles</result>
+        </action>
+        <action name="doCreateProgramSchedule" class="org.project.action.CreateProgramAttendanceAction" method="createSchedule" >
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="success" type="tiles" >/doCreateProgramSchedule.tiles</result>
+            <result name="input" type="tiles" >/doCreateProgramSchedule.tiles</result>
+        </action>
+        <action name="viewSummary" class="org.project.action.viewSummaryAction">
+            <interceptor-ref name="loggerStack" /> 
+            <result name="login_failure" type="tiles">/login.tiles</result>            
+            <result type="tiles">/viewSummary.tiles</result>           
+        </action>
+        <!-- <action name="viewSurvey" class="org.project.action.surveyAction">
+            <result type="tiles">/viewSurvey.tiles</result>           
+        </action>
+        <action name="doSurvey" class="org.project.action.SurveyUpdateAction">
+            <result name="success" type="tiles">/surveysuccess.tiles
+            </result>
+            <result name="input" type="tiles">/viewSurvey.tiles</result>
+            <result name="error" type="tiles">/viewSurvey.tiles</result>
+        </action>
+        <action name="viewSurveyDetails" class="org.project.action.viewSurveyDetailsAction">
+            <interceptor-ref name="loggerStack" />
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/viewSurveyDetails.tiles</result>           
+        </action> -->
+        <action name="workshopSummary" class="org.project.action.workshopSummaryAction">
+            <interceptor-ref name="loggerStack" /> 
+            <result name="login_failure" type="tiles">/login.tiles</result>            
+            <result type="tiles">/workshopSummary.tiles</result>           
+        </action> 
+       <action name="survey" class="org.project.action.manageSurveyAction">
+            <result type="tiles">/survey.tiles</result>           
+        </action>
+        <action name="dosurvey" class="org.project.action.SurveyRegisterAction">
+            <result name="success" type="tiles">/surveySuccess.tiles</result>
+            <result name="error" type="tiles">/home.tiles</result>
+            <result type="tiles">/surveySuccess.tiles</result>           
+        </action>
+        <action name="sendSurvey" class="">
+            <result type="tiles">/sendSurvey.tiles</result>           
+        </action>
+        <action name="dosendSurvey" class="org.project.action.SendSurveyAction">
+            <result name="success" type="tiles">/sendSurveySuccess.tiles</result>           
+        </action>
+      <!--  <action name="viewSurveySummary" class="org.project.action.manageSurveyAction" method="viewSurveySummary">
+            <result type="tiles">/viewSurveySummary.tiles</result>           
+
+        </action>-->
+        <action name="rcwiseSummary" class="org.project.action.workshopSummaryAction" method="getRcWiseReoprt">
+            <interceptor-ref name="loggerStack" /> 
+            <result name="login_failure" type="tiles">/login.tiles</result>            
+            <result type="tiles">/rcwiseSummary.tiles</result> 
+        </action>
+        <action name="statewiseSummary" class="org.project.action.workshopSummaryAction" method="getStateWiseReoprt">
+            <interceptor-ref name="loggerStack" /> 
+            <result type="tiles">/statewiseSummary.tiles</result>      
+            <result name="login_failure" type="tiles">/login.tiles</result>
+                 
+        </action>
+        <action name="readexdata" class="org.project.action.readexceldataAction" method="displayReadExcel">
+            <interceptor-ref name="loggerStack" />
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/readexdata.tiles</result>           
+        </action>
+        <action name="doreadexcel" class="org.project.action.readexceldataAction" method="ReadExcelData">
+            <interceptor-ref name="loggerStack" />
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="input" type="tiles">/login.tiles</result> 
+            <result type="tiles">/readexdatasuccess.tiles</result>  
+        </action>
+        <action name="workshopRegistrationOnInvite" class="org.project.action.WorkshopRegistrationOnInviteAction">
+            <!--            <interceptor-ref name="loginStack"/>-->
+            <result name="error" type="tiles">/errorIdNotExist.tiles</result>            
+            <result name="success" type="tiles">/privateWorkshopRegistration.tiles</result>           
+        </action>          
+        <action name="registerParticipantOnInvite" class="org.project.action.RegisterParticipantOnInvite">
+            <!--            <interceptor-ref name="loginStack"/>-->
+            <result name="error" type="tiles">/errorIdNotExist.tiles</result>            
+            <result name="already_registered" type="tiles">/alreadyRegistered1.tiles</result>
+            <result name="success" type="tiles">/confirmWorkshopregistration.tiles</result>
+            <result name="input" type="tiles">/privateWorkshopRegistration.tiles</result>            
+        </action>  
+        <action name="viewProgramSchedule" class="org.project.action.AttendanceDetailsAction" method="getProgramSchedule">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/viewProgramSchedule.tiles</result>
+        </action>
+        <action name="invitenotreg" class="org.project.action.readexceldataAction" method="getInviteNotRegData">
+            <interceptor-ref name="loggerStack" />
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/invitenotreg.tiles</result>           
+        </action>
+        <action name="viewAttendanceDetails" class="org.project.action.AttendanceDetailsAction" method="getAttendanceSheet">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/viewAttendanceDetails.tiles</result>
+        </action>
+        <action name="loginNotReg" class="org.project.action.viewSummaryAction" method="GetDetailsOfLoginButNotRegister">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/loginNotReg.tiles</result>
+        </action>
+        <action name="viewAttendanceOfParticipants" class="org.project.action.AttendanceDetailsAction" method="getAttendanceSheetWSC">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/viewAttendanceOfParticipants.tiles</result>
+        </action>
+        <action name="manageParticipantsRCC" class="org.project.action.ManageParticipantsRCCAction">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/manageParticipantsRCC.tiles</result>
+        </action>
+        <action name="programScheduleAdmin" class="org.project.action.AttendanceDetailsAction">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/programScheduleAdmin.tiles</result>
+        </action>  
+        <action name="instructions" class="org.project.action.InstructionsAction">
+            <result type="tiles">/instructions.tiles</result>
+        </action>        
+        <action name="displayRCCDetails" class="org.project.action.DisplayRCCActionForUser">
+            <result type="tiles">/displayRCCDetails.tiles</result>
+        </action>
+        <action name="viewAttendanceWT" class="org.project.action.viewAttendanceWTAction" method="getParticipantAttendance">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/viewAttendanceWT.tiles</result>
+        </action>
+        <action name="uploadAttendacebyWSC" class="org.project.action.uploadAttendacebyWSCAction" method="displayUploadAttendance">
+            <interceptor-ref name="defaultStack">
+                <param name="validation.excludeMethods">displayUploadAttendance</param>
+            </interceptor-ref>
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/uploadAttendacebyWSC.tiles</result>
+        </action>
+        <action name="douploadAttendacebyWSC" class="org.project.action.uploadAttendacebyWSCAction" method="upload_Attendace">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="input" type="tiles">/uploadAttendacebyWSC.tiles</result>
+            <result type="tiles">/douploadAttendacebyWSCSuccess.tiles</result>
+        </action>
+        <action name="viewUploadedAttendance" class="org.project.action.uploadAttendacebyWSCAction" method="viewUploadedAttendance">
+            <interceptor-ref name="defaultStack">
+                <param name="validation.excludeMethods">viewUploadedAttendance</param>
+            </interceptor-ref>
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/viewUploadedAttendance.tiles</result>
+        </action>
+        <action name="downloadAttendanceSheet">
+            <result>pages/DAODownloadAttendanceSheetWSC.jsp</result>
+        </action>
+        <action name="registration_reject">
+            <result>/mail-template/registration_reject.html</result>         
+        </action>
+        <action name="Verified_Mail_SelfSustained">
+            <result>/mail-template/Verified_Mail_SelfSustained.html</result>         
+        </action>
+        <action name="countOfOngoingRegistrations">
+            <result>/mail-template/countOfOngoingRegistrations.html</result>         
+        </action>
+        <action name="cleanUpPersonTable" class="org.project.misc.CapitalizeName_PersonTable" method="getAllPersonNames">
+            <result type="tiles">cleanUpPersonTable.tiles</result>         
+        </action>
+        <action name="participantListRCC" class="org.project.action.ParticipantListAction">
+            <interceptor-ref name="loggerStack" />           
+            <result type="tiles">/participantListRCC.tiles</result>           
+        </action>  
+        <action name="viewAttendanceOfParticipantsRCC" class="org.project.action.AttendanceDetailsAction" method="getAttendanceSheetWSC">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/viewAttendanceOfParticipantsRCC.tiles</result>
+        </action>
+        <action name="faqAdmin" class="org.project.action.FAQAdminAction">
+            <result type="tiles">/faqAdmin.tiles</result>
+        </action>
+        <action name="nominatedWSC" class="org.project.action.NominationsAction" >
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/nominatedWSC.tiles</result>
+        </action>
+        <action name="nominateWSC" class="org.project.action.NominationsAction" method="listWorkshops">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/nominateWSC.tiles</result>
+        </action>
+        <action name="doNominate" class="org.project.action.NominationsAction" method="doNominate">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/nominatedWSC.tiles</result>
+        </action>
+        <action name="createAttendanceNewParticipant" class="org.project.action.AttendanceDetailsAction" method="checkLogin">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/createAttendanceNewParticipant.tiles</result>
+        </action>
+        <action name="insertNewParticipantASheet" class="org.project.action.AttendanceDetailsAction" method="insertNewParticipantInAttendance">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/createAttendanceNewParticipant.tiles</result>
+        </action>
+        <action name="nominateWSC_mail">
+            <result>/mail-template/nominateWSC.html</result>         
+        </action>
+        <action name="attendanceForParticipants">
+            <result>/mail-template/attendanceForParticipants.html</result>         
+        </action>
+        <action name="unsubscribe" class="org.project.action.UnsubscribeAction">
+            <result type="tiles">/unsubscribe.tiles</result>           
+        </action>  
+        <action name="certificateAudit" class="org.project.action.NominationsAction" method="certificateAudit">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/certificateAudit.tiles</result>           
+        </action>
+        <action name="viewUploadedAttendaceByWSC" class="org.project.action.ViewUploadedAttendanceByWSCAction" method="viewUploadedAttendanceToWSC">
+            <interceptor-ref name="loggerStack" />
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/viewUploadedAttendaceByWSC.tiles</result>
+        </action>
+        <action name="workshopAttended" class="org.project.action.WorkshopAttendedReportAction" method="getWorkshopAttendedReport">
+            <result type="tiles">/workshopAttended.tiles</result> 
+            <result name="login_failure" type="tiles">/login.tiles</result>
+        </action>
+        <action name="createScheduleByExcel" class="org.project.action.CreateScheduleByExcelAction">
+            <result type="tiles">/createScheduleByExcel.tiles</result> 
+            <result name="login_failure" type="tiles">/login.tiles</result>
+        </action>
+        <action name="docreateScheduleByExcel" class="org.project.action.CreateScheduleByExcelAction" method="ReadExcelData">
+            <interceptor-ref name="loggerStack" />
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="input" type="tiles">/login.tiles</result> 
+            <result type="tiles">/createScheduleByExcelSuccess.tiles</result>  
+        </action>
+        <action name="paymentSuccess" class="org.project.action.PaymentAction" method="paymentSuccess">
+            <result type="tiles">/paymentSuccess.tiles</result>           
+        </action>
+        <action name="paymentDetails" class="org.project.action.PaymentAction" method="getAllParticipantPaymentDetails">
+            <interceptor-ref name="loggerStack" />
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/paymentDetails.tiles</result> 
+        </action>
+        <action name="showPaymentDetails" class="org.project.action.PaymentAction" method="getPaymentDetailsOfParticipant">
+            <interceptor-ref name="loggerStack" />
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/showPaymentDetails.tiles</result> 
+        </action>
+        <action name="workshopremark" class="org.project.action.PaymentAction" method="getWorkhshopsWithRemarks">
+            <interceptor-ref name="loggerStack" />
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/workshopremark.tiles</result> 
+        </action>
+        <action name="displayPayIndex" class="org.project.action.DisplayPaymentDetailsAction" method="getDisplayDetailsOfPayment">
+            <interceptor-ref name="loggerStack" />
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/displayPayIndex.tiles</result> 
+        </action>
+        <action name="subscribe" class="org.project.action.SubscribeAction">
+            <result type="tiles">/subscribe.tiles</result>           
+        </action> 
+        <action name="subscribeHere" class="">
+            <result type="tiles">/subscribeHere.tiles</result>           
+        </action> 
+        <action name="dosubscribe" class="org.project.action.SubscribeAction" method="doSubscribe">
+            <result type="tiles">/subscribe.tiles</result>           
+        </action>
+        <action name="showWorkshopsIndex" class="org.project.action.WorkshopAttendedReportAction" method="getWorkshopList">
+            <interceptor-ref name="loggerStack" />           
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/showWorkshopsIndex.tiles</result>           
+        </action>
+        <action name="faculyOfInstituteReport" class="org.project.action.WorkshopAttendedReportAction" method="getFacultyAttendedByInstitute">
+            <result type="tiles">/faculyOfInstituteReport.tiles</result> 
+            <result name="login_failure" type="tiles">/login.tiles</result>
+        </action>
+        <action name="participantListSW" class="org.project.action.ParticipantListActionStateWise">
+            <interceptor-ref name="loggerStack" />           
+            <result type="tiles">/participantListSW.tiles</result>           
+        </action>  
+        <action name="viewInstitutesForCertificates" class="org.project.action.ParticipantListActionStateWise" method="getConfirmedParticipants">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/viewInstitutesForCertificates.tiles</result>
+        </action>   
+        <action name="viewCompletedParticipantsIW" class="org.project.action.ParticipantListActionStateWise" method="getConfirmedParticipants">
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/viewCompletedParticipantsSW.tiles</result>
+        </action> 
+        
+        <action name="participantDetailsSW" class="org.project.action.ParticipantListActionStateWise" method="getAllStateWiseParticipants">
+            <interceptor-ref name="loggerStack" />           
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/participantDetailsSW.tiles</result>           
+        </action>
+        <action name="updateDetailsSW" class="org.project.action.UpdateParticipantDetailsActionSW">
+            <interceptor-ref name="loggerStack" />           
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result type="tiles">/updateDetailsSW.tiles</result>           
+        </action>
+        <action name="doupdateParticipantDetailsSW" class="org.project.action.ParticipantDetailsUpdateAction" method="updateParticipantDetailsSW">
+            <interceptor-ref name="loginStack"/>
+            <result name="login_failure" type="tiles">/login.tiles</result>
+            <result name="success" type="tiles">/profileupdatesuccessful_adminSW.tiles</result>
+            <result name="input" type="tiles">/profile.tiles</result>
+            <result name="error" type="tiles">/profile.tiles</result>
+        </action>
+    </package>        
+</struts>

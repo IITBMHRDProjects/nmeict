@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">       
+    <meta name="description" content="website description" />
+    <meta name="keywords" content="website keywords, website keywords" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>'Project Name' | Manage Institute</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" href="css/tipTip.css"/>
+    <link rel="stylesheet" href="css/css3-buttons.css"/>
+    <!-- modernizr enables HTML5 elements and feature detects -->
+    <script type="text/javascript" src="js/modernizr-1.5.min.js"></script>   
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery.easing-sooper.js"></script>
+    <script type="text/javascript" src="js/jquery.sooperfish.js"></script>
+    <script type="text/javascript" src="js/project_common.js"></script>
+    <script language="JavaScript" src="js/jquery.tipTip.minified.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".tipTip").tipTip({defaultPosition: "right"});
+        });
+    </script>
+    <style type="text/css">
+        @import "template_table_2/jquery.dataTables.css";
+    </style>
+
+    <!--css added for the pagination and table css-->
+<!--    <script type="text/javascript" language="javascript" src="template_table_2/jquery-1.11.1.min.js"></script>-->
+    <script type="text/javascript" language="javascript" src="template_table_2/jquery.dataTables.js"></script>
+    <script language="JavaScript" src="js/jquery.tipTip.minified.js"></script>       
+    <script type="text/javascript">
+        $(function() {
+            $(".tipTip").tipTip({defaultPosition: "right"});
+        });
+    </script>
+    <script type="text/javascript" language="JavaScript" src="js/ajaxedit.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('ul.sf-menu').sooperfish();
+            $('.top').click(function() {
+                $('html, body').animate({scrollTop: 0}, 'fast');
+                return false;
+            });
+            $("#settingoptions").hide();
+            $("#showmore").click(function(e) {
+                var x=e.pageX;
+                var tmpx=x-200;
+                $("#settingoptions").css({left: tmpx});
+                $("#settingoptions").slideToggle();
+            });
+
+            $(document).bind('click', function(e) {
+                $("#settingoptions").hide();
+            });
+        });
+    </script>
+    <script src="validation/validate.js"></script>
+    <script type="text/javascript" language="JavaScript" src="js/ajaxedit.js"></script>
+    <script>
+        function ChangeInstituteType(value) {
+            if (value == 'type') {
+                alert("select Type");
+                var tempdata = document.getElementsByName("tablebody")[0];
+                tempdata.innerHTML = "";
+                $jQuery2('#mytable').dataTable().fnClearTable();
+                $jQuery2('#mytable').dataTable().fnDestroy();
+            } else if (value == '1') {
+                get_InstituteDetails(value);
+            } else if (value == '0') {
+                get_InstituteDetails(value);
+            } else if (value == '-1') {
+                get_InstituteDetails(value);
+            } else {
+
+            }
+
+            // alert(value);
+        }
+
+        function get_InstituteDetails(activeType) {
+            var data = "active=" + activeType;
+            $.ajax({
+                url: "pages/DAOgetActiveTypeInstituteDetails.jsp",
+                type: "GET",
+                data: data,
+                dataType: "json",
+                success: set_InstituteDetails,
+                error: onError
+            });
+        }
+
+        function set_InstituteDetails(data) {
+            //var tempdata = document.getElementById("tablebody");
+            var roleid = document.getElementById("roletypeid").value;
+            var tempdata = document.getElementsByName("tablebody")[0];
+            tempdata.innerHTML = "";
+            $jQuery2('#mytable').dataTable().fnClearTable();
+            $jQuery2('#mytable').dataTable().fnDestroy();
+            var srno = 1;
+            for (var i = 0; i < data.length; i++) {
+                // var table = document.getElementById("mytable");
+                var table = document.getElementsByName("tablebody")[0];
+                //var table = document.getElementsByName("tablebody");
+                var row = document.createElement('tr');
+                var cell1 = document.createElement('td');
+                var cell2 = document.createElement('td');
+                var cell3 = document.createElement('td');
+                var cell4 = document.createElement('td');
+                var cell5 = document.createElement('td');
+                var cell6 = document.createElement('td');
+                var cell7 = document.createElement('td');
+                var cell8 = document.createElement('td');
+                var cell9 = document.createElement('td');
+                var cell10 = document.createElement('td');
+
+                var text1 = document.createTextNode(srno);
+                var text2 = document.createTextNode(data[i].instituteId);
+                var text3 = document.createTextNode(data[i].instituteName);
+                var text4 = document.createTextNode(data[i].city.cityName);
+                var text5 = document.createTextNode(data[i].state.stateName);
+                if (data[i].pincode == null || data[i].pincode == 0) {
+                    var text6 = document.createTextNode("");
+                } else {
+                    var text6 = document.createTextNode(data[i].pincode);
+                }
+                var text7 = document.createTextNode(data[i].instituteAddress);
+                if (data[i].isActive == 1) {
+                    var text8 = document.createTextNode("Active");
+                } else if (data[i].isActive == 0) {
+                    var text8 = document.createTextNode("InActive");
+                } else if (data[i].isActive == -1) {
+                    var text8 = document.createTextNode("Not Approved");
+                } else {
+                    var text8 = document.createTextNode(data[i].isActive);
+                }
+                var button = document.createElement("input");
+                button.setAttribute("type", "button");
+                button.setAttribute("value", "Update");
+                button.setAttribute("onclick", "onbuttonClick('" + data[i].instituteId + "')");
+                //button.setAttribute("style", "border-radius: 8px; padding: 2px; padding-left: 15px; padding-right: 15px; background: #1e90ff; color: white;");
+                button.setAttribute("style","font: 120% 'Droid Sans', arial; border: 0; width: 99px;  height: 25px; padding: 2px 0 3px 0; cursor: pointer; background: #1e90ff; color: #FFF;border-radius: 7px 7px 7px 7px;-moz-border-radius: 7px 7px 7px 7px;-webkit-border: 7px 7px 7px 7px;");
+                
+                var button2 = document.createElement("input");
+                button2.setAttribute("type", "button");
+                button2.setAttribute("value", "Details");
+                button2.setAttribute("onclick", "onbuttonClick_Head('" + data[i].instituteId + "')");
+                //button2.setAttribute("style", "border-radius: 8px; padding: 2px; padding-left: 15px; padding-right: 15px; background: #f28d51; color: white;")
+                button2.setAttribute("style","font: 120% 'Droid Sans', arial; border: 0; width: 99px;  height: 25px; padding: 2px 0 3px 0; cursor: pointer; background: #f28d51; color: #FFF;border-radius: 7px 7px 7px 7px;-moz-border-radius: 7px 7px 7px 7px;-webkit-border: 7px 7px 7px 7px;");
+                
+                cell1.appendChild(text1);
+                cell2.appendChild(text2);
+                cell3.appendChild(text3);
+                cell4.appendChild(text4);
+                cell5.appendChild(text5);
+                cell6.appendChild(text6);
+                cell7.appendChild(text7);
+                cell8.appendChild(text8);
+                cell9.appendChild(button);
+                cell10.appendChild(button2)
+
+                row.appendChild(cell1);
+                row.appendChild(cell2);
+                row.appendChild(cell3);
+                row.appendChild(cell4);
+                row.appendChild(cell5);
+                row.appendChild(cell6);
+                row.appendChild(cell7);
+                row.appendChild(cell8);
+
+                if (roleid == 3) {
+                    //only ready only access to usertype 3
+                } else {
+                    row.appendChild(cell9);
+                }
+                row.appendChild(cell10)
+                table.appendChild(row);
+
+                srno++;
+            }
+            $jQuery2(function(){
+                $jQuery2('#mytable').dataTable({
+                    // paging: false,
+                    // searching: false
+                    destroy: true,
+                });
+            });
+           /* $(document).ready(function() {
+                $('#mytable').dataTable({
+                    // paging: false,
+                    // searching: false
+                    destroy: true,
+                });
+            });*/
+        }
+
+        function onbuttonClick(value) {
+            window.open("updateInstitute.html?instituteid=" + value);
+        }
+
+        function changeState() {
+            var stateID = document.getElementById('instituteState').value;
+            if (stateID != -1) {
+                fetchCity(stateID);
+            } else {
+                document.getElementById('instituteState').value = "-1";
+            }
+        }
+
+        function onlyNumbers(evt)
+        {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+
+            return true;
+        }
+
+        function validateInstituteDetails() {
+            var flag1 = true;
+
+            document.getElementById("instituteName").style.border = '';
+            document.getElementById("instituteState").style.border = '';
+            document.getElementById("cityInstitute").style.border = '';
+            document.getElementById("instituteAddress").style.border = '';
+            document.getElementById("institutepincode").style.border = '';
+            var institutename = document.getElementById("instituteName").value;
+            var state = document.getElementById("instituteState").value;
+            var city = document.getElementById("cityInstitute").value;
+            var address = document.getElementById("instituteAddress").value;
+            var pincode = document.getElementById("institutepincode").value;
+            document.getElementById("instituteNameError").style.display = "none";
+            document.getElementById("instituteStateError").style.display = "none";
+            document.getElementById("instituteCityError").style.display = "none";
+            document.getElementById("instituteAddressError").style.display = "none";
+            document.getElementById("institutePincodeError").style.display = "none";
+            document.getElementById("instituteIsActiveError").style.display = "none";
+            if (institutename == '' || institutename == null) {
+                flag1 = false;
+                document.getElementById("instituteNameError").style.display = "inline";
+                document.getElementById("instituteName").style.border.color = 'red';
+            }
+            if (state == -1) {
+                flag1 = false;
+                document.getElementById("instituteStateError").style.display = "inline";
+                document.getElementById("instituteState").style.border.color = 'red';
+            }
+            if (city == -1) {
+                flag1 = false;
+                document.getElementById("instituteCityError").style.display = "inline";
+                document.getElementById("cityInstitute").style.border.color = 'red';
+            }
+
+            var isActive = document.getElementsByName("institute.isActive");
+            if (!isActive[0].checked && !isActive[1].checked && !isActive[2].checked) {
+                document.getElementById("instituteIsActiveError").style.display = "inline";
+                flag1 = false;
+            }
+
+            var active = document.getElementById("isActive1");
+            if (active.checked) {
+                if (!isStringInRange(address, 5, 230) || !remarkValidator(address)) {
+                    document.getElementById("instituteAddressError").style.display = "inline";
+                    document.getElementById("instituteAddress").style.border.color = 'red';
+                    flag1 = false;
+                }
+                if (pincode.length < 6) {
+                    flag1 = false;
+                    document.getElementById("institutePincodeError").style.display = "inline";
+                    document.getElementById("institutepincode").style.border.color = 'red';
+                }
+            } else {
+                if (address.trim().length > 0) {
+                    if (!isStringInRange(address, 5, 230) || !remarkValidator(address)) {
+                        document.getElementById("instituteAddressError").style.display = "inline";
+                        document.getElementById("instituteAddress").style.border.color = 'red';
+                        flag1 = false;
+                    }
+                }
+                if (pincode.length > 0) {
+                    if (pincode.length < 6) {
+                        flag1 = false;
+                        document.getElementById("institutePincodeError").style.display = "inline";
+                        document.getElementById("institutepincode").style.border.color = 'red';
+                    }
+                }
+            }
+
+            if (!validateInstitute(institutename)) {
+                flag1 = false;
+                document.getElementById("instituteNameError").style.display = "inline";
+                document.getElementById("instituteName").style.border.color = 'red';
+            }
+            return flag1;
+        }
+
+        function isStringInRange(str, minLength, maxLength) {
+            var result = false;
+            str = alltrim(str);
+            if (isStringValid(str)) {
+                if (str.length >= minLength && str.length <= maxLength) {
+                    result = true;
+                }
+            }
+            return result;
+        }
+
+        function remarkValidator(remark) {
+            var result = false;
+            var remarkstr = /^[A-Za-z0-9 .\r\n\\/()&:',_;-]*$/;
+            if (remark.match(remarkstr)) {
+                result = true;
+            }
+            return result;
+        }
+
+        function validateInstitute(university) {
+            var result = false;
+            var Regstr = /^[A-Za-z0-9 \'(),.-]*$/;
+            if (university.match(Regstr) && university.trim().length > 0) {
+                result = true;
+            }
+            return result;
+        }
+
+        function sethiddenVal(val) {
+            if (val == 1) {
+                document.getElementById("typeActive").value = "check";
+            } else if (val == 0) {
+                document.getElementById("typeNotActive").value = "check";
+            } else if (val == -1) {
+                document.getElementById("typeNotApproved").value = "check";
+            }
+        }
+
+        function resetAll() {
+            window.location.reload();
+        }
+
+        function create_Excel() {
+            var type = document.getElementById("selectInstitute").value;
+            if (type == "type") {
+                alert("please Select Type of Institute");
+            } else {
+                createExcelSheet(type);
+            }
+        }
+
+
+        function createExcelSheet(type) {
+            var data = "type=" + type;
+            $.ajax({
+                url: "pages/DAOCreateExcel_instituteDetails.jsp",
+                type: "GET",
+                data: data,
+                dataType: "json",
+                success: excel_success1,
+                error: onError
+            });
+        }
+
+        function excel_success1(data) {
+            var url = "Excel_Sheets/" + data + ".xls";
+            window.location.assign(url);
+        }
+
+        function onError(jqXHR, textStatus) {
+            alert("Error : " + textStatus);
+        }
+
+        function onbuttonClick_Head(value) {
+            window.open("viewInstituteHeadDetails.html?instituteid=" + value);
+        }
+
+        function updateHead(value,sid) {
+             window.open("updateInstituteHeadDetails.html?instituteid=" + value+"&stream="+sid);
+        }
+
+        function borderRedError(id) {
+            document.getElementById(id).style.border = '1px solid red';
+        }
+
+        function validateName(str) {
+            var result = false;
+            var dispNameExp = /^[a-zA-Z][a-zA-Z\. ]+$/;
+            if (str.match(dispNameExp)) {
+                var previous = str.charAt(0);
+                var current;
+                for (i = 1; i < str.length; i++) {
+                    current = str.charAt(i);
+                    if (previous == current && previous == ' ') {
+                        return false;
+                    }
+                    previous = current;
+                }
+                result = true;
+            }
+            if (str.match(dispNameExp)) {
+                var previous = str.charAt(0);
+                var current;
+                for (i = 1; i < str.length; i++) {
+                    current = str.charAt(i);
+                    if (previous == current && previous == '.') {
+                        return false;
+                    }
+                    previous = current;
+                }
+                result = true;
+            }
+            return result;
+        }
+
+        function emailValidator(email) {
+            var result = false;
+            var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+            if (email.match(emailExp)) {
+                result = true;
+            }
+            return result;
+        }
+
+        function checkZero1()
+        {
+            var headphone = document.getElementById("headphone").value;
+            var firstNum = headphone.charAt(0);
+            if (firstNum != 0) {
+                headphone = '0' + headphone;
+            } else if (firstNum == 0) {
+                headphone = headphone;
+            }
+            var Hephone = document.getElementById("headphone");
+            Hephone.value = headphone;
+
+        }
+
+        var phoneregex = /^\+?[0][0-9]{8,12}$/;
+
+        function validateHeadDetails(callmethod) {
+            var flag1 = true;
+            document.getElementById("HeadName").style.border = '';
+            document.getElementById("HeadEmail").style.border = '';
+            document.getElementById("head_title_id").style.border = '';
+            document.getElementById("head_designation_id").style.border = '';
+            document.getElementById("headAddress").style.border = '';
+            document.getElementById("headphone").style.border = '';
+            //document.getElementById("headAddress").style.border = '';
+            var headname = document.getElementById("HeadName").value;
+            var heademail = document.getElementById("HeadEmail").value;
+            var headtitle = document.getElementById("head_title_id").value;
+            var headdesig = document.getElementById("head_designation_id").value;
+            var headaddress = document.getElementById("headAddress").value;
+            var headphone = document.getElementById("headphone").value;
+            var instituteid = document.getElementById("hidden_instituteId").value;
+            //var streamid = document.getElementById("hidden_streamId").value;
+            document.getElementById("HeadNameError").style.display = "none";
+            document.getElementById("HeadEmailError").style.display = "none";
+            document.getElementById("HeadTitleError").style.display = "none";
+            document.getElementById("HeadDesignationError").style.display = "none";
+            document.getElementById("HeadAddressError").style.display = "none";
+            document.getElementById("HeadPhoneError").style.display = "none";
+            document.getElementById("HeadIsActiveError").style.display = "none";
+            
+            if(callmethod == 'add'){
+                var stream=document.getElementById("stream_id").value;
+                if(stream == -1){
+                    borderRedError("stream_id");
+                    document.getElementById('HeadStreamError').style.display = "inline";
+                    flag1 = false;
+                }else{
+                    document.getElementById("stream_id").style.border = '';
+                    document.getElementById("HeadStreamError").style.display = "none";
+                }
+            }
+            
+            if (instituteid == 0) {
+                return false;
+            }
+            if (!isStringInRange(headname, 2, 50) || !validateName(headname)) {
+                borderRedError("HeadName");
+                document.getElementById("HeadNameError").style.display = "inline";
+                flag1 = false;
+            }
+
+            if (alltrim(heademail) == "" || !emailValidator(heademail)) {
+                borderRedError("HeadEmail");
+                document.getElementById("HeadEmailError").style.display = "inline";
+                flag1 = false;
+            }
+
+            if (headtitle == -1) {
+                borderRedError("head_title_id");
+                document.getElementById('HeadTitleError').style.display = "inline";
+                flag1 = false;
+            }
+
+            if (headdesig == -1) {
+                borderRedError("head_designation_id");
+                document.getElementById('HeadDesignationError').style.display = "inline";
+                flag1 = false;
+            }
+
+            if (!isStringInRange(headaddress, 5, 230) || !remarkValidator(headaddress)) {
+                borderRedError("headAddress");
+                document.getElementById('HeadAddressError').style.display = "inline";
+                flag1 = false;
+            }
+
+            if (!headphone.match(phoneregex)) {
+                borderRedError("headphone");
+                document.getElementById('HeadPhoneError').style.display = "inline";
+                flag1 = false;
+            }
+
+            var isActive = document.getElementsByName("head_details.isActive");
+            if (!isActive[0].checked && !isActive[1].checked && !isActive[2].checked) {
+                document.getElementById("HeadIsActiveError").style.display = "inline";
+                flag1 = false;
+            }
+            return flag1;
+        }
+
+        function addNewHead(val){
+            window.open("addNewHeadDetails.html?instituteid=" + val);
+        }
+        
+        function resetAllHead(){
+            location.reload('true');
+         }
+         
+        function resetinstituteAll(){
+            location.reload('true');
+        }
+    </script>
